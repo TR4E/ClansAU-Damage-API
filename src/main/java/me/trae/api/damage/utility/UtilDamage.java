@@ -1,10 +1,14 @@
 package me.trae.api.damage.utility;
 
 import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.utility.UtilJava;
+import me.trae.core.utility.UtilMath;
+import me.trae.core.utility.UtilServer;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityLiving;
+import org.bukkit.EntityEffect;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.LivingEntity;
 
@@ -17,6 +21,12 @@ public class UtilDamage {
         // Apply interaction between damagee and damager
         if (entityLivingDamager != null) {
             entityLivingDamagee.b(entityLivingDamager);
+        }
+
+        if (entityLivingDamagee.getHealth() > 0.0F) {
+            event.getDamagee().playEffect(EntityEffect.HURT);
+
+            entityLivingDamagee.setHealth(UtilMath.getMinAndMax(Float.class, 0.0F, entityLivingDamagee.getMaxHealth(), entityLivingDamagee.getHealth() - (float) event.getFinalDamage()));
         }
 
         // Handle death scenario
@@ -35,6 +45,10 @@ public class UtilDamage {
             }
 
             entityLivingDamagee.die(damageSource);
+
+            event.getDamagee().playEffect(EntityEffect.DEATH);
+
+            UtilServer.callEvent(new CustomDeathEvent(event));
         }
     }
 }

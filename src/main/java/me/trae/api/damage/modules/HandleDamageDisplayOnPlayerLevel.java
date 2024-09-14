@@ -46,7 +46,7 @@ public class HandleDamageDisplayOnPlayerLevel extends SpigotListener<SpigotPlugi
 
         final Player damager = event.getDamagerByClass(Player.class);
 
-        damager.setLevel((int) Math.round(event.getDamage()));
+        damager.setLevel((int) Math.round(event.getFinalDamage()));
 
         this.USERS.put(damager.getUniqueId(), System.currentTimeMillis());
     }

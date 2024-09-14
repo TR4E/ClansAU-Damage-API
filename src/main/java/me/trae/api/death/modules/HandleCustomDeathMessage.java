@@ -33,7 +33,7 @@ public class HandleCustomDeathMessage extends SpigotListener<SpigotPlugin, Death
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onCustomDeath(final CustomDeathEvent event) {
-        if (!(event.getEntity() instanceof Player) && this.getPrimitiveCasted(Boolean.class, "Players-Online")) {
+        if (!(event.getEntity() instanceof Player) && this.getPrimitiveCasted(Boolean.class, "Players-Only")) {
             return;
         }
 

@@ -36,6 +36,7 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
         this.cause = cause;
 
         this.damage = damage;
+        this.knockback = 1.0D;
         this.soundCreator = new SoundCreator(Sound.HURT_FLESH);
 
         if (damagee != null) {

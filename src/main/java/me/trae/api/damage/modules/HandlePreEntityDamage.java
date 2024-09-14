@@ -4,14 +4,11 @@ import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.api.damage.utility.constants.DamageConstants;
-import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.framework.SpigotPlugin;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
-import me.trae.core.utility.UtilMath;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.objects.SoundCreator;
-import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -56,7 +53,6 @@ public class HandlePreEntityDamage extends SpigotListener<SpigotPlugin, DamageMa
             return;
         }
 
-        this.handleDamage(customDamageEvent);
         this.handleDamageSound(customDamageEvent);
         this.handleKnockback(customDamageEvent);
 
@@ -100,22 +96,6 @@ public class HandlePreEntityDamage extends SpigotListener<SpigotPlugin, DamageMa
         }
 
         return false;
-    }
-
-    private void handleDamage(final CustomDamageEvent event) {
-        final Damageable damagee = event.getDamageeByClass(Damageable.class);
-
-        if (damagee.getHealth() > 0.0D) {
-            damagee.playEffect(EntityEffect.HURT);
-
-            damagee.setHealth(UtilMath.getMinAndMax(Double.class, 0.0D, damagee.getMaxHealth(), damagee.getHealth() - event.getFinalDamage()));
-        }
-
-        if (damagee.getHealth() <= 0.0D) {
-            damagee.playEffect(EntityEffect.DEATH);
-
-            UtilServer.callEvent(new CustomDeathEvent(event));
-        }
     }
 
     private void handleDamageSound(final CustomDamageEvent event) {
