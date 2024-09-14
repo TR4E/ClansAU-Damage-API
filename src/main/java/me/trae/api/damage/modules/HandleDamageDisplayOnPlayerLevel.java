@@ -2,7 +2,7 @@ package me.trae.api.damage.modules;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.updater.annotations.Update;
 import me.trae.core.updater.interfaces.Updater;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class HandleDamageDisplayOnPlayerLevel extends SpigotListener<SpigotPlugin, DamageManager> implements Updater {
+public class HandleDamageDisplayOnPlayerLevel extends SpigotListener<Core, DamageManager> implements Updater {
 
     private final Map<UUID, Long> USERS = new HashMap<>();
 

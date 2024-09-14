@@ -7,7 +7,6 @@ import me.trae.api.combat.modules.HandleCombatUpdater;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
-import me.trae.core.framework.SpigotPlugin;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.enums.TimeUnit;
 import me.trae.core.weapon.Weapon;
@@ -23,13 +22,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class CombatManager extends SpigotManager<SpigotPlugin> implements ICombatManager {
+public class CombatManager extends SpigotManager<Core> implements ICombatManager {
 
     public static long COMBAT_DURATION = TimeUnit.SECONDS.getDuration() * 30;
 
     private final Map<UUID, Combat> COMBAT_MAP = new HashMap<>();
 
-    public CombatManager(final SpigotPlugin instance) {
+    public CombatManager(final Core instance) {
         super(instance);
     }
 
@@ -70,7 +69,7 @@ public class CombatManager extends SpigotManager<SpigotPlugin> implements IComba
 
     @Override
     public boolean isSafeByPlayerOnLog(final Player player) {
-        if (this.getInstance(Core.class).getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
+        if (this.getInstance().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
             return true;
         }
 
@@ -78,7 +77,7 @@ public class CombatManager extends SpigotManager<SpigotPlugin> implements IComba
             return true;
         }
 
-        final WeaponManager weaponManager = this.getInstance(Core.class).getManagerByClass(WeaponManager.class);
+        final WeaponManager weaponManager = this.getInstance().getManagerByClass(WeaponManager.class);
 
         final Predicate<ItemStack> predicate = (itemStack -> {
             if (itemStack == null || itemStack.getType() == Material.AIR) {

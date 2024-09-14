@@ -4,7 +4,7 @@ import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.api.damage.utility.constants.DamageConstants;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
@@ -24,7 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
-public class HandlePreEntityDamage extends SpigotListener<SpigotPlugin, DamageManager> {
+public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
 
     public HandlePreEntityDamage(final DamageManager manager) {
         super(manager);

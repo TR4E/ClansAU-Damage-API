@@ -7,7 +7,6 @@ import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.api.death.events.CustomDeathMessageEvent;
 import me.trae.core.Core;
-import me.trae.core.framework.SpigotPlugin;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilColor;
 import me.trae.core.utility.UtilMessage;
@@ -22,7 +21,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class HandleCustomDeathMessage extends SpigotListener<SpigotPlugin, DeathManager> {
+public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager> {
 
     public HandleCustomDeathMessage(final DeathManager manager) {
         super(manager);
@@ -79,7 +78,7 @@ public class HandleCustomDeathMessage extends SpigotListener<SpigotPlugin, Death
 
         String reason = damageEvent.getOriginalReasonString();
 
-        final DamageReason damageReason = this.getInstance(Core.class).getManagerByClass(DamageManager.class).getReasonByEntity(damageEvent.getDamagee(), damageEvent.getDamager());
+        final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getReasonByEntity(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {
             reason = UtilColor.applyIfNotMatched(ChatColor.DARK_GREEN, damageReason.getName());
         }

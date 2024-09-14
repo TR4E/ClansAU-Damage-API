@@ -1,12 +1,12 @@
 package me.trae.api.death;
 
 import me.trae.api.death.modules.HandleCustomDeathMessage;
+import me.trae.core.Core;
 import me.trae.core.framework.SpigotManager;
-import me.trae.core.framework.SpigotPlugin;
 
-public class DeathManager extends SpigotManager<SpigotPlugin> {
+public class DeathManager extends SpigotManager<Core> {
 
-    public DeathManager(final SpigotPlugin instance) {
+    public DeathManager(final Core instance) {
         super(instance);
     }
 

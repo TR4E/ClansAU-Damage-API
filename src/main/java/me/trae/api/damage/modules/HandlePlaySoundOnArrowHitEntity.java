@@ -2,7 +2,7 @@ package me.trae.api.damage.modules;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.Sound;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-public class HandlePlaySoundOnArrowHitEntity extends SpigotListener<SpigotPlugin, DamageManager> {
+public class HandlePlaySoundOnArrowHitEntity extends SpigotListener<Core, DamageManager> {
 
     public HandlePlaySoundOnArrowHitEntity(final DamageManager manager) {
         super(manager);

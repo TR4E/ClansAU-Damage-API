@@ -2,7 +2,7 @@ package me.trae.api.combat.modules;
 
 import me.trae.api.combat.CombatManager;
 import me.trae.api.combat.events.CombatUpdaterEvent;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotUpdater;
 import me.trae.core.updater.annotations.Update;
 import me.trae.core.utility.UtilMessage;
@@ -10,7 +10,7 @@ import me.trae.core.utility.UtilServer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class HandleCombatUpdater extends SpigotUpdater<SpigotPlugin, CombatManager> {
+public class HandleCombatUpdater extends SpigotUpdater<Core, CombatManager> {
 
     public HandleCombatUpdater(final CombatManager manager) {
         super(manager);

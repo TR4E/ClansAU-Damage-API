@@ -2,13 +2,13 @@ package me.trae.api.combat.modules;
 
 import me.trae.api.combat.CombatManager;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-public class HandleCombatOnDamage extends SpigotListener<SpigotPlugin, CombatManager> {
+public class HandleCombatOnDamage extends SpigotListener<Core, CombatManager> {
 
     public HandleCombatOnDamage(final CombatManager manager) {
         super(manager);

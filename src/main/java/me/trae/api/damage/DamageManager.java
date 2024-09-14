@@ -7,20 +7,20 @@ import me.trae.api.damage.modules.HandleDamageDisplayOnPlayerLevel;
 import me.trae.api.damage.modules.HandleDamageReasonCheckForNewDamage;
 import me.trae.api.damage.modules.HandlePlaySoundOnArrowHitEntity;
 import me.trae.api.damage.modules.HandlePreEntityDamage;
+import me.trae.core.Core;
 import me.trae.core.framework.SpigotManager;
-import me.trae.core.framework.SpigotPlugin;
 import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DamageManager extends SpigotManager<SpigotPlugin> implements IDamageManager {
+public class DamageManager extends SpigotManager<Core> implements IDamageManager {
 
     private final Map<UUID, CustomDamageEvent> LAST_DAMAGE_DATA = new HashMap<>();
     private final Map<UUID, Map<UUID, DamageReason>> REASON_MAP = new HashMap<>();
 
-    public DamageManager(final SpigotPlugin instance) {
+    public DamageManager(final Core instance) {
         super(instance);
     }
 

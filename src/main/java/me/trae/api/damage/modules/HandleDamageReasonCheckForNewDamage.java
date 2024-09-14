@@ -3,13 +3,13 @@ package me.trae.api.damage.modules;
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-public class HandleDamageReasonCheckForNewDamage extends SpigotListener<SpigotPlugin, DamageManager> {
+public class HandleDamageReasonCheckForNewDamage extends SpigotListener<Core, DamageManager> {
 
     public HandleDamageReasonCheckForNewDamage(final DamageManager manager) {
         super(manager);
