@@ -1,5 +1,6 @@
 package me.trae.api.combat;
 
+import me.trae.api.combat.events.CombatTagEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
 import me.trae.api.combat.modules.HandleCombatOnDamage;
 import me.trae.api.combat.modules.HandleCombatUpdater;
@@ -7,6 +8,7 @@ import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.framework.SpigotPlugin;
+import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.enums.TimeUnit;
 import me.trae.core.weapon.Weapon;
 import me.trae.core.weapon.WeaponManager;
@@ -44,7 +46,11 @@ public class CombatManager extends SpigotManager<SpigotPlugin> implements IComba
 
     @Override
     public void addCombat(final Player player) {
-        this.getCombatMap().put(player.getUniqueId(), new Combat(player));
+        final Combat combat = new Combat(player);
+
+        this.getCombatMap().put(player.getUniqueId(), combat);
+
+        UtilServer.callEvent(new CombatTagEvent(combat, player));
     }
 
     @Override

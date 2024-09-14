@@ -1,9 +1,14 @@
 package me.trae.api.damage.events;
 
+import me.trae.api.damage.DamageManager;
+import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.interfaces.ICustomDamageEvent;
+import me.trae.api.damage.utility.constants.DamageConstants;
+import me.trae.core.Core;
 import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.utility.UtilEntity;
 import me.trae.core.utility.UtilJava;
+import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -21,11 +26,13 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     private final Entity damagee, damager;
     private final Projectile projectile;
     private final EntityDamageEvent.DamageCause cause;
+    private final String causeString, originalReasonString;
 
     private long delay;
     private double damage, knockback;
     private SoundCreator soundCreator;
     private String damageeName, damagerName;
+    private DamageReason reason;
 
     private CustomDamageEvent(final Entity damagee, final Entity damager, final Projectile projectile, final EntityDamageEvent.DamageCause cause, final double damage) {
         this.systemTime = System.currentTimeMillis();
@@ -34,6 +41,8 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
         this.damager = damager;
         this.projectile = projectile;
         this.cause = cause;
+        this.causeString = DamageConstants.createDefaultCauseString(this);
+        this.originalReasonString = DamageConstants.createDefaultReasonString(this);
 
         this.damage = damage;
         this.knockback = 1.0D;
@@ -45,6 +54,8 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
 
         if (damager != null) {
             this.damagerName = ChatColor.YELLOW + damager.getName();
+        } else {
+            this.damagerName = ChatColor.YELLOW + this.getCauseString();
         }
     }
 
@@ -83,6 +94,16 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     @Override
     public EntityDamageEvent.DamageCause getCause() {
         return this.cause;
+    }
+
+    @Override
+    public String getCauseString() {
+        return this.causeString;
+    }
+
+    @Override
+    public String getOriginalReasonString() {
+        return this.originalReasonString;
     }
 
     @Override
@@ -175,5 +196,17 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     @Override
     public String getProjectileName() {
         return this.hasProjectile() ? ChatColor.YELLOW + this.getProjectile().getName() : null;
+    }
+
+    @Override
+    public DamageReason getReason() {
+        return this.reason;
+    }
+
+    @Override
+    public void setReason(final String name, final long duration) {
+        this.reason = new DamageReason(name, duration);
+
+        UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).addReason(this.getDamagee(), this.getDamager(), this.getReason());
     }
 }

@@ -1,5 +1,6 @@
 package me.trae.api.damage.events.interfaces;
 
+import me.trae.api.damage.data.DamageReason;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.components.GetSystemTimeComponent;
 import me.trae.core.utility.objects.SoundCreator;
@@ -36,6 +37,10 @@ public interface ICustomDamageEvent extends GetSystemTimeComponent {
     }
 
     EntityDamageEvent.DamageCause getCause();
+
+    String getCauseString();
+
+    String getOriginalReasonString();
 
     long getDelay();
 
@@ -76,4 +81,12 @@ public interface ICustomDamageEvent extends GetSystemTimeComponent {
     void setDamagerName(final String damagerName);
 
     String getProjectileName();
+
+    DamageReason getReason();
+
+    void setReason(final String name, final long duration);
+
+    default void setReason(final String name) {
+        this.setReason(name, -1L);
+    }
 }

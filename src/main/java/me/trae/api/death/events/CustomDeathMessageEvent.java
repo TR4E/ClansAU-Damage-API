@@ -1,9 +1,7 @@
 package me.trae.api.death.events;
 
-import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.api.death.events.interfaces.ICustomDeathMessageEvent;
 import me.trae.core.event.CustomCancellableEvent;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class CustomDeathMessageEvent extends CustomCancellableEvent implements ICustomDeathMessageEvent {
@@ -17,15 +15,8 @@ public class CustomDeathMessageEvent extends CustomCancellableEvent implements I
         this.deathEvent = deathEvent;
         this.target = target;
 
-        if (deathEvent.getEntity() != null) {
-            this.entityName = ChatColor.YELLOW + deathEvent.getEntity().getName();
-        }
-
-        if (deathEvent.getKiller() != null) {
-            this.killerName = ChatColor.YELLOW + deathEvent.getKiller().getName();
-        } else {
-            this.killerName = ChatColor.YELLOW + DamageConstants.createDefaultCauseString(deathEvent.getDamageEvent());
-        }
+        this.entityName = deathEvent.getDamageEvent().getDamageeName();
+        this.killerName = deathEvent.getDamageEvent().getDamagerName();
     }
 
     @Override

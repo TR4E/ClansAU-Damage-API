@@ -1,9 +1,12 @@
 package me.trae.api.damage.utility;
 
+import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.death.events.CustomDeathEvent;
+import me.trae.core.Core;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMath;
+import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.UtilServer;
 import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityHuman;
@@ -48,7 +51,12 @@ public class UtilDamage {
 
             event.getDamagee().playEffect(EntityEffect.DEATH);
 
-            UtilServer.callEvent(new CustomDeathEvent(event));
+            CustomDamageEvent data = UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
+            if (data == null) {
+                data = event;
+            }
+
+            UtilServer.callEvent(new CustomDeathEvent(data));
         }
     }
 }

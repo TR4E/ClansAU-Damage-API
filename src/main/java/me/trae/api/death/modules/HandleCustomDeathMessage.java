@@ -1,14 +1,18 @@
 package me.trae.api.death.modules;
 
+import me.trae.api.damage.DamageManager;
+import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.api.death.events.CustomDeathMessageEvent;
+import me.trae.core.Core;
 import me.trae.core.framework.SpigotPlugin;
 import me.trae.core.framework.types.frame.SpigotListener;
+import me.trae.core.utility.UtilColor;
 import me.trae.core.utility.UtilMessage;
 import me.trae.core.utility.UtilServer;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -73,9 +77,14 @@ public class HandleCustomDeathMessage extends SpigotListener<SpigotPlugin, Death
             return;
         }
 
-        String reason = DamageConstants.createDefaultReasonString(damageEvent);
+        String reason = damageEvent.getOriginalReasonString();
 
-        if (!(reason.contains("Air"))) {
+        final DamageReason damageReason = this.getInstance(Core.class).getManagerByClass(DamageManager.class).getReasonByEntity(damageEvent.getDamagee(), damageEvent.getDamager());
+        if (damageReason != null && !(damageReason.hasExpired())) {
+            reason = UtilColor.applyIfNotMatched(ChatColor.DARK_GREEN, damageReason.getName());
+        }
+
+        if (damageReason == null && !(reason.contains("Air"))) {
             reason = String.format("a %s", reason);
         }
 

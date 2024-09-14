@@ -57,6 +57,10 @@ public class HandlePreEntityDamage extends SpigotListener<SpigotPlugin, DamageMa
         this.handleKnockback(customDamageEvent);
 
         UtilDamage.applyVanillaDamageMechanics(customDamageEvent);
+
+        if (customDamageEvent.getDamager() != null) {
+            this.getManager().addLastDamageData(customDamageEvent);
+        }
     }
 
     private CustomDamageEvent getCustomDamageEvent(final EntityDamageEvent entityDamageEvent) {
