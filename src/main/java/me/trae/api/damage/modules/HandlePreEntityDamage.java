@@ -58,9 +58,7 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
 
         UtilDamage.applyVanillaDamageMechanics(customDamageEvent);
 
-        if (customDamageEvent.getDamager() != null) {
-            this.getManager().addLastDamageData(customDamageEvent);
-        }
+        this.getManager().addLastDamageData(customDamageEvent);
     }
 
     private CustomDamageEvent getCustomDamageEvent(final EntityDamageEvent entityDamageEvent) {

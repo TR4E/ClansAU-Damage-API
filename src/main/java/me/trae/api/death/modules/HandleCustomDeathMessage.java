@@ -83,7 +83,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
             reason = UtilColor.applyIfNotMatched(ChatColor.DARK_GREEN, damageReason.getName());
         }
 
-        if (damageReason == null && !(reason.contains("Air"))) {
+        if ((damageReason == null || damageReason.hasExpired()) && !(reason.contains("Air"))) {
             reason = String.format("a %s", reason);
         }
 

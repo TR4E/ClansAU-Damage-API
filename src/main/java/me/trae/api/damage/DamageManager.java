@@ -39,6 +39,10 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
     @Override
     public void addLastDamageData(final CustomDamageEvent data) {
+        if (data.getDamager() == null) {
+            return;
+        }
+
         this.getLastDamageData().put(data.getDamagee().getUniqueId(), data);
     }
 
