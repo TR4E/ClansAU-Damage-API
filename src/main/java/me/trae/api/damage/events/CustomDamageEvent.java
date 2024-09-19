@@ -19,6 +19,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
+
 public class CustomDamageEvent extends CustomCancellableEvent implements ICustomDamageEvent {
 
     private final long systemTime;
@@ -29,7 +31,8 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     private final String causeString, originalReasonString;
 
     private long delay;
-    private double damage, knockback;
+    private double damage;
+    private double knockback;
     private SoundCreator soundCreator;
     private String damageeName, damagerName;
     private DamageReason reason;
@@ -60,15 +63,15 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     }
 
     public CustomDamageEvent(final EntityDamageEvent event) {
-        this(event.getEntity(), null, null, event.getCause(), event.getFinalDamage());
+        this(event.getEntity(), null, null, event.getCause(), event.getDamage());
     }
 
     public CustomDamageEvent(final EntityDamageByEntityEvent event) {
-        this(event.getEntity(), event.getDamager(), null, event.getCause(), event.getFinalDamage());
+        this(event.getEntity(), event.getDamager(), null, event.getCause(), event.getDamage());
     }
 
     public CustomDamageEvent(final EntityDamageByEntityEvent event, final Projectile projectile) {
-        this(event.getEntity(), UtilJava.cast(Entity.class, projectile.getShooter()), projectile, event.getCause(), event.getFinalDamage());
+        this(event.getEntity(), UtilJava.cast(Entity.class, projectile.getShooter()), projectile, event.getCause(), event.getDamage());
     }
 
     @Override
@@ -147,6 +150,16 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
                 final double weakness = UtilEntity.getPotionEffectAmplifier(damagee, PotionEffectType.WEAKNESS) * 1.5D;
 
                 damage += weakness;
+            }
+        }
+
+        if (this.getDamagee() instanceof LivingEntity) {
+            final LivingEntity damagee = this.getDamageeByClass(LivingEntity.class);
+
+            final EntityDamageEvent entityDamageEvent = damagee.getLastDamageCause();
+
+            for (final EntityDamageEvent.DamageModifier modifier : Arrays.asList(EntityDamageEvent.DamageModifier.RESISTANCE, EntityDamageEvent.DamageModifier.MAGIC, EntityDamageEvent.DamageModifier.ABSORPTION)) {
+                damage += entityDamageEvent.getOriginalDamage(modifier);
             }
         }
 
