@@ -3,15 +3,14 @@ package me.trae.api.combat.events;
 import me.trae.api.combat.Combat;
 import me.trae.api.combat.events.interfaces.ICombatEvent;
 import me.trae.core.event.CustomEvent;
-import me.trae.core.event.types.IPlayerEvent;
 import org.bukkit.entity.Player;
 
-public class CombatTagEvent extends CustomEvent implements ICombatEvent, IPlayerEvent {
+public class CombatReceiveEvent extends CustomEvent implements ICombatEvent {
 
     private final Combat combat;
     private final Player player;
 
-    public CombatTagEvent(final Combat combat, final Player player) {
+    public CombatReceiveEvent(final Combat combat, final Player player) {
         this.combat = combat;
         this.player = player;
     }

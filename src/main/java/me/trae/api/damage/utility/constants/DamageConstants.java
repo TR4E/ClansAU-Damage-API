@@ -96,13 +96,21 @@ public class DamageConstants {
         return getEntityHurtSound(entity);
     }
 
+    public static String createDefaultCauseString(final CustomDamageEvent event) {
+        final Entity damager = event.getDamager();
+
+        if (damager instanceof TNTPrimed) {
+            return "TNT Explosion";
+        }
+
+        return UtilString.clean(event.getCause().name());
+    }
+
     public static String createDefaultReasonString(final CustomDamageEvent event) {
         String reason = null;
 
         if (event.getDamager() instanceof LivingEntity) {
-            final LivingEntity damager = event.getDamagerByClass(LivingEntity.class);
-
-            final ItemStack itemStack = damager.getEquipment().getItemInHand();
+            final ItemStack itemStack = event.getItemStack();
             if (itemStack != null) {
                 if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
                     reason = itemStack.getItemMeta().getDisplayName();
@@ -121,15 +129,5 @@ public class DamageConstants {
         }
 
         return reason;
-    }
-
-    public static String createDefaultCauseString(final CustomDamageEvent event) {
-        final Entity damager = event.getDamager();
-
-        if (damager instanceof TNTPrimed) {
-            return "TNT Explosion";
-        }
-
-        return UtilString.clean(event.getCause().name());
     }
 }

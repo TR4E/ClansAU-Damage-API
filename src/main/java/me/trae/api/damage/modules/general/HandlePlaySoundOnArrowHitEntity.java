@@ -1,16 +1,19 @@
-package me.trae.api.combat.modules;
+package me.trae.api.damage.modules.general;
 
-import me.trae.api.combat.CombatManager;
+import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
+import me.trae.core.utility.objects.SoundCreator;
+import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-public class HandleCombatOnDamage extends SpigotListener<Core, CombatManager> {
+public class HandlePlaySoundOnArrowHitEntity extends SpigotListener<Core, DamageManager> {
 
-    public HandleCombatOnDamage(final CombatManager manager) {
+    public HandlePlaySoundOnArrowHitEntity(final DamageManager manager) {
         super(manager);
     }
 
@@ -20,7 +23,7 @@ public class HandleCombatOnDamage extends SpigotListener<Core, CombatManager> {
             return;
         }
 
-        if (!(event.getDamagee() instanceof Player)) {
+        if (!(event.getProjectile() instanceof Arrow)) {
             return;
         }
 
@@ -28,7 +31,6 @@ public class HandleCombatOnDamage extends SpigotListener<Core, CombatManager> {
             return;
         }
 
-        this.getManager().addCombat(event.getDamageeByClass(Player.class));
-        this.getManager().addCombat(event.getDamagerByClass(Player.class));
+        new SoundCreator(Sound.ORB_PICKUP).play(event.getDamageeByClass(Player.class));
     }
 }

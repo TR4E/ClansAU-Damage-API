@@ -1,4 +1,4 @@
-package me.trae.api.damage.modules;
+package me.trae.api.damage.modules.system;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
@@ -28,20 +28,22 @@ public class HandleDamageReasonCheckForNewDamage extends SpigotListener<Core, Da
 
         final Entity damagee = event.getDamagee();
 
-        final DamageReason damageReason = this.getManager().getReasonByEntity(damager, damagee);
-        if (damageReason == null) {
+        final DamageReason lastDamageReason = this.getManager().getLastReasonByDamagee(damagee, damager);
+        if (lastDamageReason == null) {
             return;
         }
 
-        final DamageReason reason = event.getReason();
-        if (reason != null && damageReason.getName().equals(reason.getName())) {
+        final DamageReason damageReason = event.getReason();
+        if (damageReason == null || damageReason.getName().equals(lastDamageReason.getName())) {
             return;
         }
 
-        if (damageReason.getDuration() == -1L) {
+        if (lastDamageReason.getDuration() == -1L) {
             return;
         }
 
-        this.getManager().removeReason(damager, damagee);
+        System.out.println("Removed reason");
+
+        this.getManager().removeLastReason(damagee, damager);
     }
 }

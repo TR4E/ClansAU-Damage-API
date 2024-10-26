@@ -9,17 +9,17 @@ import java.util.UUID;
 
 public interface IDamageManager {
 
-    Map<UUID, CustomDamageEvent> getLastDamageData();
+    Map<UUID, CustomDamageEvent> getLastDamageDataMap();
 
     void addLastDamageData(final CustomDamageEvent data);
 
     CustomDamageEvent getLastDamageDataByDamagee(final Entity damagee);
 
-    Map<UUID, Map<UUID, DamageReason>> getReasonMap();
+    Map<UUID, Map<UUID, DamageReason>> getLastReasonMap();
 
-    void addReason(final Entity damagee, final Entity damager, final DamageReason damageReason);
+    void addLastReason(final Entity damagee, final Entity damager, final DamageReason damageReason);
 
-    void removeReason(final Entity damagee, final Entity damager);
+    void removeLastReason(final Entity damagee, final Entity damager);
 
-    DamageReason getReasonByEntity(final Entity damagee, final Entity damager);
+    DamageReason getLastReasonByDamagee(final Entity damagee, final Entity damager);
 }

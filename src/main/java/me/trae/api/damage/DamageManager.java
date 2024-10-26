@@ -3,10 +3,16 @@ package me.trae.api.damage;
 import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.interfaces.IDamageManager;
-import me.trae.api.damage.modules.HandleDamageDisplayOnPlayerLevel;
-import me.trae.api.damage.modules.HandleDamageReasonCheckForNewDamage;
-import me.trae.api.damage.modules.HandlePlaySoundOnArrowHitEntity;
-import me.trae.api.damage.modules.HandlePreEntityDamage;
+import me.trae.api.damage.modules.general.HandlePlaySoundOnArrowHitEntity;
+import me.trae.api.damage.modules.generic.HandleCustomDamageKnockback;
+import me.trae.api.damage.modules.generic.HandleCustomDamageSound;
+import me.trae.api.damage.modules.generic.HandleDealCustomDamage;
+import me.trae.api.damage.modules.generic.HandlePreEntityDamage;
+import me.trae.api.damage.modules.generic.armour.HandleArmourDurability;
+import me.trae.api.damage.modules.generic.armour.HandleArmourReduction;
+import me.trae.api.damage.modules.generic.weapon.HandleWeaponDurability;
+import me.trae.api.damage.modules.generic.weapon.HandleWeaponReduction;
+import me.trae.api.damage.modules.system.HandleDamageReasonCheckForNewDamage;
 import me.trae.core.Core;
 import me.trae.core.framework.SpigotManager;
 import org.bukkit.entity.Entity;
@@ -17,8 +23,8 @@ import java.util.UUID;
 
 public class DamageManager extends SpigotManager<Core> implements IDamageManager {
 
-    private final Map<UUID, CustomDamageEvent> LAST_DAMAGE_DATA = new HashMap<>();
-    private final Map<UUID, Map<UUID, DamageReason>> REASON_MAP = new HashMap<>();
+    private final Map<UUID, CustomDamageEvent> LAST_DAMAGE_DATA_MAP = new HashMap<>();
+    private final Map<UUID, Map<UUID, DamageReason>> LAST_REASON_MAP = new HashMap<>();
 
     public DamageManager(final Core instance) {
         super(instance);
@@ -26,15 +32,28 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
     @Override
     public void registerModules() {
-        addModule(new HandleDamageDisplayOnPlayerLevel(this));
-        addModule(new HandleDamageReasonCheckForNewDamage(this));
+        // General Modules
         addModule(new HandlePlaySoundOnArrowHitEntity(this));
+
+        // Generic Modules
+        addModule(new HandleCustomDamageKnockback(this));
+        addModule(new HandleCustomDamageSound(this));
+        addModule(new HandleDealCustomDamage(this));
         addModule(new HandlePreEntityDamage(this));
+        // Armour
+        addModule(new HandleArmourDurability(this));
+        addModule(new HandleArmourReduction(this));
+        // Weapon
+        addModule(new HandleWeaponDurability(this));
+        addModule(new HandleWeaponReduction(this));
+
+        // System Modules
+        addModule(new HandleDamageReasonCheckForNewDamage(this));
     }
 
     @Override
-    public Map<UUID, CustomDamageEvent> getLastDamageData() {
-        return this.LAST_DAMAGE_DATA;
+    public Map<UUID, CustomDamageEvent> getLastDamageDataMap() {
+        return this.LAST_DAMAGE_DATA_MAP;
     }
 
     @Override
@@ -43,39 +62,39 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
             return;
         }
 
-        this.getLastDamageData().put(data.getDamagee().getUniqueId(), data);
+        this.getLastDamageDataMap().put(data.getDamagee().getUniqueId(), data);
     }
 
     @Override
     public CustomDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
-        if (this.getLastDamageData().containsKey(damagee.getUniqueId())) {
-            return this.getLastDamageData().remove(damagee.getUniqueId());
+        if (this.getLastDamageDataMap().containsKey(damagee.getUniqueId())) {
+            return this.getLastDamageDataMap().remove(damagee.getUniqueId());
         }
 
         return null;
     }
 
     @Override
-    public Map<UUID, Map<UUID, DamageReason>> getReasonMap() {
-        return this.REASON_MAP;
+    public Map<UUID, Map<UUID, DamageReason>> getLastReasonMap() {
+        return this.LAST_REASON_MAP;
     }
 
     @Override
-    public void addReason(final Entity damagee, final Entity damager, final DamageReason damageReason) {
-        if (!(this.getReasonMap().containsKey(damagee.getUniqueId()))) {
-            this.getReasonMap().put(damagee.getUniqueId(), new HashMap<>());
+    public void addLastReason(final Entity damagee, final Entity damager, final DamageReason damageReason) {
+        if (!(this.getLastReasonMap().containsKey(damagee.getUniqueId()))) {
+            this.getLastReasonMap().put(damagee.getUniqueId(), new HashMap<>());
         }
 
-        this.getReasonMap().get(damagee.getUniqueId()).put(damager.getUniqueId(), damageReason);
+        this.getLastReasonMap().get(damagee.getUniqueId()).put(damager.getUniqueId(), damageReason);
     }
 
     @Override
-    public void removeReason(final Entity damagee, final Entity damager) {
-        this.getReasonMap().getOrDefault(damagee.getUniqueId(), new HashMap<>()).remove(damager.getUniqueId());
+    public void removeLastReason(final Entity damagee, final Entity damager) {
+        this.getLastReasonMap().getOrDefault(damagee.getUniqueId(), new HashMap<>()).remove(damager.getUniqueId());
     }
 
     @Override
-    public DamageReason getReasonByEntity(final Entity damagee, final Entity damager) {
-        return this.getReasonMap().getOrDefault(damagee.getUniqueId(), new HashMap<>()).getOrDefault(damager.getUniqueId(), null);
+    public DamageReason getLastReasonByDamagee(final Entity damagee, final Entity damager) {
+        return this.getLastReasonMap().getOrDefault(damagee.getUniqueId(), new HashMap<>()).getOrDefault(damager.getUniqueId(), null);
     }
 }

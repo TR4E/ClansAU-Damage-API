@@ -76,9 +76,9 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
             return;
         }
 
-        String reason = damageEvent.getOriginalReasonString();
+        String reason = damageEvent.getReasonString();
 
-        final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getReasonByEntity(damageEvent.getDamagee(), damageEvent.getDamager());
+        final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {
             reason = UtilColor.applyIfNotMatched(ChatColor.DARK_GREEN, damageReason.getName());
         }

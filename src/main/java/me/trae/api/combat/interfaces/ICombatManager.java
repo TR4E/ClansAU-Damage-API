@@ -17,6 +17,4 @@ public interface ICombatManager {
     Combat getCombatByPlayer(final Player player);
 
     boolean isCombatByPlayer(final Player player);
-
-    boolean isSafeByPlayerOnLog(final Player player);
 }

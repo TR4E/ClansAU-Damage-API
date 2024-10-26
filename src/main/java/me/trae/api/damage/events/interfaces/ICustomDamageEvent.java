@@ -2,13 +2,15 @@ package me.trae.api.damage.events.interfaces;
 
 import me.trae.api.damage.data.DamageReason;
 import me.trae.core.utility.UtilJava;
-import me.trae.core.utility.components.GetSystemTimeComponent;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
-public interface ICustomDamageEvent extends GetSystemTimeComponent {
+public interface ICustomDamageEvent {
+
+    long getSystemTime();
 
     Entity getDamagee();
 
@@ -40,37 +42,49 @@ public interface ICustomDamageEvent extends GetSystemTimeComponent {
 
     String getCauseString();
 
-    String getOriginalReasonString();
+    String getReasonString();
+
+    ItemStack getItemStack();
+
+    double getDamage();
+
+    void setDamage(final double damage);
+
+    default boolean hasDamage() {
+        return this.getDamage() > 0.0D;
+    }
 
     long getDelay();
 
     void setDelay(final long delay);
 
     default boolean hasDelay() {
-        return this.getDelay() > 0L;
-    }
-
-    double getDamage();
-
-    void setDamage(final double damage);
-
-    double getFinalDamage();
-
-    default boolean hasDamage() {
-        return this.getDamage() > 0.0D;
+        return this.getDelay() > 0.0D;
     }
 
     double getKnockback();
 
     void setKnockback(final double knockback);
 
-    default boolean isKnockback() {
+    default boolean hasKnockback() {
         return this.getKnockback() > 0.0D;
     }
 
     SoundCreator getSoundCreator();
 
     void setSoundCreator(final SoundCreator soundCreator);
+
+    default boolean hasSoundCreator() {
+        return this.getSoundCreator() != null;
+    }
+
+    DamageReason getReason();
+
+    void setReason(final String name, final long duration);
+
+    default boolean hasReason() {
+        return this.getReason() != null;
+    }
 
     String getDamageeName();
 
@@ -79,14 +93,4 @@ public interface ICustomDamageEvent extends GetSystemTimeComponent {
     String getDamagerName();
 
     void setDamagerName(final String damagerName);
-
-    String getProjectileName();
-
-    DamageReason getReason();
-
-    void setReason(final String name, final long duration);
-
-    default void setReason(final String name) {
-        this.setReason(name, -1L);
-    }
 }

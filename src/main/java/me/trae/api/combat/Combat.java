@@ -1,5 +1,6 @@
 package me.trae.api.combat;
 
+import me.trae.api.combat.constants.CombatConstants;
 import me.trae.api.combat.interfaces.ICombat;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,7 @@ public class Combat implements ICombat {
     public Combat(final Player player) {
         this.uuid = player.getUniqueId();
         this.systemTime = System.currentTimeMillis();
-        this.duration = CombatManager.COMBAT_DURATION;
+        this.duration = CombatConstants.COMBAT_DURATION;
     }
 
     @Override

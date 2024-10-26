@@ -15,8 +15,8 @@ public class CustomDeathMessageEvent extends CustomCancellableEvent implements I
         this.deathEvent = deathEvent;
         this.target = target;
 
-        this.entityName = deathEvent.getDamageEvent().getDamageeName();
-        this.killerName = deathEvent.getDamageEvent().getDamagerName();
+        this.entityName = String.format("<yellow>%s", deathEvent.getEntity().getName());
+        this.killerName = String.format("<yellow>%s", (deathEvent.getKiller() != null ? deathEvent.getKiller().getName() : deathEvent.getDamageEvent().getCauseString()));
     }
 
     @Override

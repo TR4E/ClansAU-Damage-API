@@ -1,7 +1,7 @@
 package me.trae.api.combat.modules;
 
 import me.trae.api.combat.CombatManager;
-import me.trae.api.combat.events.CombatUpdaterEvent;
+import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotUpdater;
 import me.trae.core.updater.annotations.Update;
@@ -16,7 +16,7 @@ public class HandleCombatUpdater extends SpigotUpdater<Core, CombatManager> {
         super(manager);
     }
 
-    @Update(delay = 250L)
+    @Update
     public void onUpdater() {
         this.getManager().getCombatMap().values().removeIf(combat -> {
             if (!(combat.hasExpired())) {
@@ -24,10 +24,11 @@ public class HandleCombatUpdater extends SpigotUpdater<Core, CombatManager> {
             }
 
             final Player player = Bukkit.getPlayer(combat.getUUID());
+
+            UtilServer.callEvent(new CombatRemoveEvent(combat, player));
+
             if (player != null) {
                 UtilMessage.message(player, "Combat", "You are no longer in Combat!");
-
-                UtilServer.callEvent(new CombatUpdaterEvent(combat, player));
             }
 
             return true;

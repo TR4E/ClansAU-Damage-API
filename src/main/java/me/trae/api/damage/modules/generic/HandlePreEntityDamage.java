@@ -1,16 +1,12 @@
-package me.trae.api.damage.modules;
+package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.api.damage.utility.UtilDamage;
-import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
-import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.GameMode;
-import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -20,7 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
@@ -49,16 +44,6 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         }
 
         UtilServer.callEvent(customDamageEvent);
-        if (customDamageEvent.isCancelled()) {
-            return;
-        }
-
-        this.handleDamageSound(customDamageEvent);
-        this.handleKnockback(customDamageEvent);
-
-        UtilDamage.applyVanillaDamageMechanics(customDamageEvent);
-
-        this.getManager().addLastDamageData(customDamageEvent);
     }
 
     private CustomDamageEvent getCustomDamageEvent(final EntityDamageEvent entityDamageEvent) {
@@ -98,47 +83,5 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         }
 
         return false;
-    }
-
-    private void handleDamageSound(final CustomDamageEvent event) {
-        SoundCreator soundCreator = event.getSoundCreator();
-        if (soundCreator == null) {
-            return;
-        }
-
-        final Entity damagee = event.getDamagee();
-
-        if (soundCreator.getSound() == Sound.HURT_FLESH) {
-            final Sound sound = (event.getDamageeByClass(Damageable.class).getHealth() > 0.0D ? DamageConstants.getEntityHurtSound(damagee) : DamageConstants.getEntityDeathSound(damagee));
-            if (sound != null) {
-                soundCreator = new SoundCreator(sound);
-            }
-        }
-
-        soundCreator.play(damagee.getLocation());
-    }
-
-    private void handleKnockback(final CustomDamageEvent event) {
-        if (!(event.isKnockback())) {
-            return;
-        }
-
-        final Entity damager = event.getDamager();
-        if (damager == null) {
-            return;
-        }
-
-        final Entity damagee = event.getDamagee();
-
-        if (damager == damagee) {
-            return;
-        }
-
-        final Vector velocity = damagee.getLocation().toVector().subtract(damager.getLocation().toVector()).normalize();
-
-        velocity.multiply(event.getKnockback());
-        velocity.setY(0.5D);
-
-        damagee.setVelocity(velocity);
     }
 }
