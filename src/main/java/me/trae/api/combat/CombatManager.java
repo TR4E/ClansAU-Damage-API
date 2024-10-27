@@ -3,19 +3,31 @@ package me.trae.api.combat;
 import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
+import me.trae.api.combat.modules.HandleCombatLogOnPlayerQuit;
 import me.trae.api.combat.modules.HandleCombatUpdater;
+import me.trae.api.combat.npc.CombatNPC;
 import me.trae.core.Core;
+import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.utility.UtilServer;
+import me.trae.core.weapon.Weapon;
+import me.trae.core.weapon.WeaponManager;
+import me.trae.core.weapon.types.Legendary;
+import me.trae.core.weapon.weapons.TNT;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class CombatManager extends SpigotManager<Core> implements ICombatManager {
 
     private final Map<UUID, Combat> COMBAT_MAP = new HashMap<>();
+    private final Map<UUID, CombatNPC> COMBAT_NPC_MAP = new HashMap<>();
 
     public CombatManager(final Core instance) {
         super(instance);
@@ -23,6 +35,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public void registerModules() {
+        addModule(new HandleCombatLogOnPlayerQuit(this));
         addModule(new HandleCombatUpdater(this));
     }
 
@@ -55,5 +68,67 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     @Override
     public boolean isCombatByPlayer(final Player player) {
         return this.getCombatMap().containsKey(player.getUniqueId());
+    }
+
+    @Override
+    public boolean isSafeOnLogByPlayer(final Player player) {
+        if (this.getInstance().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
+            return true;
+        }
+
+        if (this.isCombatByPlayer(player)) {
+            return false;
+        }
+
+        final WeaponManager weaponManager = this.getInstance().getManagerByClass(WeaponManager.class);
+
+        final Predicate<ItemStack> predicate = (itemStack -> {
+            if (itemStack == null || itemStack.getType() == Material.AIR) {
+                return false;
+            }
+
+            final Weapon<?, ?, ?> weapon = weaponManager.getWeaponByItemStack(itemStack);
+
+            return weapon instanceof Legendary || weapon instanceof TNT;
+        });
+
+        for (final ItemStack itemStack : player.getInventory().getArmorContents()) {
+            if (predicate.test(itemStack)) {
+                return false;
+            }
+        }
+
+        for (final ItemStack itemStack : player.getInventory().getContents()) {
+            if (predicate.test(itemStack)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public Map<UUID, CombatNPC> getCombatNpcMap() {
+        return this.COMBAT_NPC_MAP;
+    }
+
+    @Override
+    public void addCombatNpc(final CombatNPC combatNPC) {
+        this.getCombatNpcMap().put(combatNPC.getEntity().getUniqueId(), combatNPC);
+    }
+
+    @Override
+    public void removeCombatNpc(final CombatNPC combatNPC) {
+        this.getCombatNpcMap().remove(combatNPC.getEntity().getUniqueId());
+    }
+
+    @Override
+    public CombatNPC getCombatNpcMap(final OfflinePlayer player) {
+        return this.getCombatNpcMap().getOrDefault(player.getUniqueId(), null);
+    }
+
+    @Override
+    public boolean isCombatNpc(final OfflinePlayer player) {
+        return this.getCombatNpcMap().containsKey(player.getUniqueId());
     }
 }

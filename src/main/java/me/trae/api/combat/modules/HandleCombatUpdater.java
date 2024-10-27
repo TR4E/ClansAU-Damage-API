@@ -25,9 +25,9 @@ public class HandleCombatUpdater extends SpigotUpdater<Core, CombatManager> {
 
             final Player player = Bukkit.getPlayer(combat.getUUID());
 
-            UtilServer.callEvent(new CombatRemoveEvent(combat, player));
-
             if (player != null) {
+                UtilServer.callEvent(new CombatRemoveEvent(combat, player));
+
                 UtilMessage.message(player, "Combat", "You are no longer in Combat!");
             }
 
