@@ -31,6 +31,6 @@ public class HandlePlaySoundOnArrowHitEntity extends SpigotListener<Core, Damage
             return;
         }
 
-        new SoundCreator(Sound.ORB_PICKUP).play(event.getDamageeByClass(Player.class));
+        new SoundCreator(Sound.ORB_PICKUP).play(event.getDamagerByClass(Player.class));
     }
 }

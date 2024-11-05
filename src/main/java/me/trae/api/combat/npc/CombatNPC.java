@@ -2,10 +2,14 @@ package me.trae.api.combat.npc;
 
 import me.trae.api.combat.npc.interfaces.ICombatNPC;
 import me.trae.core.npc.NPC;
+import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMessage;
 import org.apache.commons.io.FileUtils;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -29,8 +33,10 @@ public abstract class CombatNPC extends NPC implements ICombatNPC {
 
         if (this.getContents() != null) {
             for (final ItemStack itemStack : this.getContents()) {
-                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                player.getWorld().dropItemNaturally(this.getEntity().getLocation(), itemStack);
             }
+
+            this.getContents().clear();
         }
 
         try {
@@ -40,5 +46,23 @@ public abstract class CombatNPC extends NPC implements ICombatNPC {
         }
 
         UtilMessage.simpleBroadcast("Log", "<yellow><var></yellow> has dropped their inventory!", Collections.singletonList(this.getPlayer().getName()));
+    }
+
+    @Override
+    public void updateEntity(final LivingEntity entity) {
+        UtilJava.cast(Sheep.class, entity).setColor(DyeColor.CYAN);
+    }
+
+    @Override
+    public void purge() {
+        if (this.getContents() != null) {
+            for (final ItemStack itemStack : this.getContents()) {
+                this.getLocation().getWorld().dropItemNaturally(this.getLocation(), itemStack);
+            }
+
+            this.getContents().clear();
+        }
+
+        super.purge();
     }
 }

@@ -9,16 +9,19 @@ import me.trae.api.combat.npc.CombatNPC;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
+import me.trae.core.utility.UtilPlayer;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.weapon.Weapon;
 import me.trae.core.weapon.WeaponManager;
 import me.trae.core.weapon.types.Legendary;
 import me.trae.core.weapon.weapons.TNT;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -72,6 +75,14 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public boolean isSafeOnLogByPlayer(final Player player) {
+        if (Arrays.asList(GameMode.CREATIVE, GameMode.SPECTATOR).contains(player.getGameMode())) {
+            return true;
+        }
+
+        if (UtilPlayer.getCraftPlayer(player).getHandle().isSpectator()) {
+            return true;
+        }
+
         if (this.getInstance().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
             return true;
         }

@@ -20,7 +20,7 @@ public class HandleArmourReduction extends SpigotListener<Core, DamageManager> {
         super(manager);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCustomDamage(final CustomDamageEvent event) {
         if (event.isCancelled()) {
             return;
@@ -63,7 +63,7 @@ public class HandleArmourReduction extends SpigotListener<Core, DamageManager> {
             reductionPoints += armourReductionEvent.getReduction();
         }
 
-        event.setDamage(event.getDamage() * (100.0D / reductionPoints) / 100.0D);
+        event.setDamage(event.getDamage() * (100.0D - reductionPoints) / 100.0D);
     }
 
     private double getValueByMaterial(final Material material) {

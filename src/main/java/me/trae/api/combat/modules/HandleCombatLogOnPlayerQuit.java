@@ -6,6 +6,7 @@ import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.enums.TimeUnit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +30,15 @@ public class HandleCombatLogOnPlayerQuit extends SpigotListener<Core, CombatMana
         contents.addAll(Arrays.asList(player.getInventory().getArmorContents()));
         contents.addAll(Arrays.asList(player.getInventory().getContents()));
 
+        contents.removeIf(itemStack -> itemStack == null || itemStack.getType() == Material.AIR);
+
         final CombatNPC combatNPC = new CombatNPC() {
+            @Override
+            public void remove() {
+                super.remove();
+                getManager().removeCombatNpc(this);
+            }
+
             @Override
             public long getDuration() {
                 return TimeUnit.MINUTES.getDuration() * 5;
