@@ -6,6 +6,7 @@ import me.trae.core.player.events.PlayerDisplayNameEvent;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMessage;
 import me.trae.core.utility.UtilServer;
+import me.trae.core.utility.enums.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
@@ -16,8 +17,25 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.UUID;
 
 public abstract class CombatNPC extends NPC implements ICombatNPC {
+
+    private final UUID uuid;
+
+    public CombatNPC(final Player player) {
+        this.uuid = player.getUniqueId();
+    }
+
+    @Override
+    public UUID getUUID() {
+        return this.uuid;
+    }
+
+    @Override
+    public long getDuration() {
+        return TimeUnit.MINUTES.getDuration() * 5;
+    }
 
     @Override
     public EntityType getEntityType() {

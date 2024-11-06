@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HandleCombatLogOnPlayerQuit extends SpigotListener<Core, CombatManager> {
+public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, CombatManager> {
 
-    public HandleCombatLogOnPlayerQuit(final CombatManager manager) {
+    public HandleCombatLogOnPlayerJoinAndQuit(final CombatManager manager) {
         super(manager);
     }
 
@@ -32,16 +33,11 @@ public class HandleCombatLogOnPlayerQuit extends SpigotListener<Core, CombatMana
 
         contents.removeIf(itemStack -> itemStack == null || itemStack.getType() == Material.AIR);
 
-        final CombatNPC combatNPC = new CombatNPC() {
+        final CombatNPC combatNPC = new CombatNPC(player) {
             @Override
             public void remove() {
                 super.remove();
                 getManager().removeCombatNpc(this);
-            }
-
-            @Override
-            public long getDuration() {
-                return TimeUnit.MINUTES.getDuration() * 5;
             }
 
             @Override
@@ -74,5 +70,17 @@ public class HandleCombatLogOnPlayerQuit extends SpigotListener<Core, CombatMana
         }
 
         this.createCombatNPC(player);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+
+        final CombatNPC npc = this.getManager().getCombatNpcMap(player);
+        if (npc == null) {
+            return;
+        }
+
+        npc.remove();
     }
 }

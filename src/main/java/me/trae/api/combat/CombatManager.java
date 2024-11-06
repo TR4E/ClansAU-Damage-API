@@ -3,7 +3,8 @@ package me.trae.api.combat;
 import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
-import me.trae.api.combat.modules.HandleCombatLogOnPlayerQuit;
+import me.trae.api.combat.modules.HandleCombatLogOnPlayerJoinAndQuit;
+import me.trae.api.combat.modules.HandleCombatLogUpdater;
 import me.trae.api.combat.modules.HandleCombatUpdater;
 import me.trae.api.combat.npc.CombatNPC;
 import me.trae.core.Core;
@@ -38,7 +39,8 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public void registerModules() {
-        addModule(new HandleCombatLogOnPlayerQuit(this));
+        addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
+        addModule(new HandleCombatLogUpdater(this));
         addModule(new HandleCombatUpdater(this));
     }
 
@@ -125,12 +127,12 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public void addCombatNpc(final CombatNPC combatNPC) {
-        this.getCombatNpcMap().put(combatNPC.getEntity().getUniqueId(), combatNPC);
+        this.getCombatNpcMap().put(combatNPC.getUUID(), combatNPC);
     }
 
     @Override
     public void removeCombatNpc(final CombatNPC combatNPC) {
-        this.getCombatNpcMap().remove(combatNPC.getEntity().getUniqueId());
+        this.getCombatNpcMap().remove(combatNPC.getUUID());
     }
 
     @Override
