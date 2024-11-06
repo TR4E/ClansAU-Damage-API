@@ -6,11 +6,14 @@ import me.trae.api.damage.events.interfaces.ICustomDamageEvent;
 import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.core.Core;
 import me.trae.core.event.CustomCancellableEvent;
+import me.trae.core.player.events.PlayerDisplayNameEvent;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
+import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -51,8 +54,16 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
         this.causeString = DamageConstants.createDefaultCauseString(this);
         this.reasonString = DamageConstants.createDefaultReasonString(this);
 
-        this.damageeName = String.format("<yellow>%s", this.getDamagee().getName());
-        this.damagerName = String.format("<yellow>%s", (this.getDamager() != null ? this.getDamager().getName() : this.getCauseString()));
+        if (this.getDamagee() instanceof Player && this.getDamager() instanceof Player) {
+            final Player damageePlayer = this.getDamageeByClass(Player.class);
+            final Player damagerPlayer = this.getDamagerByClass(Player.class);
+
+            this.damageeName = UtilServer.getEvent(new PlayerDisplayNameEvent(damageePlayer, damagerPlayer)).getPlayerName();
+            this.damagerName = UtilServer.getEvent(new PlayerDisplayNameEvent(damagerPlayer, damageePlayer)).getPlayerName();
+        } else {
+            this.damageeName = String.format("<yellow>%s", this.getDamagee().getName());
+            this.damagerName = String.format("<yellow>%s", (this.getDamager() != null ? this.getDamager().getName() : this.getCauseString()));
+        }
     }
 
     public CustomDamageEvent(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage) {

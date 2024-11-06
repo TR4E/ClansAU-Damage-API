@@ -10,9 +10,5 @@ public interface ICustomDeathMessageEvent extends ITargetEvent<Player> {
 
     String getEntityName();
 
-    void setEntityName(final String entityName);
-
     String getKillerName();
-
-    void setKillerName(final String killerName);
 }
