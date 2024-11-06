@@ -2,8 +2,10 @@ package me.trae.api.combat.npc;
 
 import me.trae.api.combat.npc.interfaces.ICombatNPC;
 import me.trae.core.npc.NPC;
+import me.trae.core.player.events.PlayerDisplayNameEvent;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMessage;
+import me.trae.core.utility.UtilServer;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.EntityType;
@@ -45,7 +47,12 @@ public abstract class CombatNPC extends NPC implements ICombatNPC {
             e.printStackTrace();
         }
 
-        UtilMessage.simpleBroadcast("Log", "<yellow><var></yellow> has dropped their inventory!", Collections.singletonList(this.getPlayer().getName()));
+        for (final Player target : UtilServer.getOnlinePlayers()) {
+            final PlayerDisplayNameEvent playerDisplayNameEvent = new PlayerDisplayNameEvent(player, target);
+            UtilServer.callEvent(playerDisplayNameEvent);
+
+            UtilMessage.simpleMessage(target, "Log", "<var> has dropped their inventory for logging in combat!", Collections.singletonList(playerDisplayNameEvent.getPlayerName()));
+        }
     }
 
     @Override
