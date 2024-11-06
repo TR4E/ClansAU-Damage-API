@@ -14,8 +14,7 @@ import me.trae.core.utility.UtilPlayer;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.weapon.Weapon;
 import me.trae.core.weapon.WeaponManager;
-import me.trae.core.weapon.types.Legendary;
-import me.trae.core.weapon.weapons.TNT;
+import me.trae.core.weapon.models.ValuableWeapon;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -100,9 +99,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
                 return false;
             }
 
-            final Weapon<?, ?, ?> weapon = weaponManager.getWeaponByItemStack(itemStack);
-
-            return weapon instanceof Legendary || weapon instanceof TNT;
+            return weaponManager.getWeaponByItemStack(itemStack) instanceof ValuableWeapon;
         });
 
         for (final ItemStack itemStack : player.getInventory().getArmorContents()) {
