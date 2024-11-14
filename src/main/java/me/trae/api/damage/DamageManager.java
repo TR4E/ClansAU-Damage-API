@@ -4,10 +4,7 @@ import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.interfaces.IDamageManager;
 import me.trae.api.damage.modules.general.HandlePlaySoundOnArrowHitEntity;
-import me.trae.api.damage.modules.generic.HandleCustomDamageKnockback;
-import me.trae.api.damage.modules.generic.HandleCustomDamageSound;
-import me.trae.api.damage.modules.generic.HandleDealCustomDamage;
-import me.trae.api.damage.modules.generic.HandlePreEntityDamage;
+import me.trae.api.damage.modules.generic.*;
 import me.trae.api.damage.modules.generic.armour.HandleArmourDurability;
 import me.trae.api.damage.modules.generic.armour.HandleArmourReduction;
 import me.trae.api.damage.modules.generic.weapon.HandleWeaponDurability;
@@ -36,14 +33,15 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
         addModule(new HandlePlaySoundOnArrowHitEntity(this));
 
         // Generic Modules
+        addModule(new HandleCustomDamageDelay(this));
         addModule(new HandleCustomDamageKnockback(this));
         addModule(new HandleCustomDamageSound(this));
         addModule(new HandleDealCustomDamage(this));
         addModule(new HandlePreEntityDamage(this));
-        // Armour
+        // Armour Modules
         addModule(new HandleArmourDurability(this));
         addModule(new HandleArmourReduction(this));
-        // Weapon
+        // Weapon Modules
         addModule(new HandleWeaponDurability(this));
         addModule(new HandleWeaponReduction(this));
 

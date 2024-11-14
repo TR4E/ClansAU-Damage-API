@@ -54,14 +54,6 @@ public interface ICustomDamageEvent {
         return this.getDamage() > 0.0D;
     }
 
-    long getDelay();
-
-    void setDelay(final long delay);
-
-    default boolean hasDelay() {
-        return this.getDelay() > 0.0D;
-    }
-
     double getKnockback();
 
     void setKnockback(final double knockback);

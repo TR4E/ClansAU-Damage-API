@@ -12,7 +12,9 @@ import me.trae.core.utility.UtilServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.EntityEffect;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,6 +28,15 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCustomDamage(final CustomDamageEvent event) {
         if (event.isCancelled()) {
+            return;
+        }
+
+        if (event.getDamagee() instanceof Item) {
+            event.getDamagee().remove();
+            return;
+        }
+
+        if (!(event.getDamagee() instanceof Damageable)) {
             return;
         }
 

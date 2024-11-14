@@ -29,7 +29,6 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     private final String causeString, reasonString;
 
     private ItemStack itemStack;
-    private long delay;
     private double damage, knockback;
     private SoundCreator soundCreator;
     private DamageReason reason;
@@ -124,16 +123,6 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     @Override
     public void setDamage(final double damage) {
         this.damage = damage;
-    }
-
-    @Override
-    public long getDelay() {
-        return this.delay;
-    }
-
-    @Override
-    public void setDelay(final long delay) {
-        this.delay = delay;
     }
 
     @Override

@@ -12,7 +12,6 @@ import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.utility.UtilPlayer;
 import me.trae.core.utility.UtilServer;
-import me.trae.core.weapon.Weapon;
 import me.trae.core.weapon.WeaponManager;
 import me.trae.core.weapon.models.ValuableWeapon;
 import org.bukkit.GameMode;

@@ -8,7 +8,6 @@ import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -32,10 +31,6 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         }
 
         event.setCancelled(true);
-
-        if (!(event.getEntity() instanceof Damageable)) {
-            return;
-        }
 
         final CustomDamageEvent customDamageEvent = this.getCustomDamageEvent(event);
 

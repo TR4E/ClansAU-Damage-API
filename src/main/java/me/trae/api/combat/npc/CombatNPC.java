@@ -44,7 +44,7 @@ public abstract class CombatNPC extends NPC implements ICombatNPC {
 
     @Override
     public String getDisplayName() {
-        return String.format("<yellow><bold>%s <white>- <aqua><bold>%s", this.getPlayer().getName(), "Right-Click me");
+        return String.format("<yellow><bold>%s <white>- <aqua><bold>%s", this.getPlayer().getName(), "Right-Click");
     }
 
     @Override
