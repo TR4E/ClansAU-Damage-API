@@ -26,7 +26,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
     public HandleCustomDeathMessage(final DeathManager manager) {
         super(manager);
 
-        this.addPrimitive("Players-Only", false);
+        this.addPrimitive("Players-Only", true);
     }
 
     @EventHandler

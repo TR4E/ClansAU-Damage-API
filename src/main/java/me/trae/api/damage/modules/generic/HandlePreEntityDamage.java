@@ -8,6 +8,7 @@ import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -46,7 +47,13 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
             final EntityDamageByEntityEvent entityDamageByEntityEvent = UtilJava.cast(EntityDamageByEntityEvent.class, entityDamageEvent);
 
             if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
-                return new CustomDamageEvent(entityDamageByEntityEvent, UtilJava.cast(Projectile.class, entityDamageByEntityEvent.getDamager()));
+                final Projectile projectile = UtilJava.cast(Projectile.class, entityDamageByEntityEvent.getDamager());
+
+                if (projectile instanceof Arrow) {
+                    projectile.remove();
+                }
+
+                return new CustomDamageEvent(entityDamageByEntityEvent, projectile);
             }
 
             return new CustomDamageEvent(entityDamageByEntityEvent);
