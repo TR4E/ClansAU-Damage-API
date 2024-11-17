@@ -7,6 +7,7 @@ import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.api.death.events.CustomDeathMessageEvent;
 import me.trae.core.Core;
+import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilColor;
 import me.trae.core.utility.UtilMessage;
@@ -23,10 +24,11 @@ import java.util.Collections;
 
 public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager> {
 
+    @ConfigInject(type = Boolean.class, name = "Players-Only", defaultValue = "true")
+    private boolean playersOnly;
+
     public HandleCustomDeathMessage(final DeathManager manager) {
         super(manager);
-
-        this.addPrimitive("Players-Only", true);
     }
 
     @EventHandler
@@ -36,7 +38,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onCustomDeath(final CustomDeathEvent event) {
-        if (!(event.getEntity() instanceof Player) && this.getPrimitiveCasted(Boolean.class, "Players-Only")) {
+        if (!(event.getEntity() instanceof Player) && this.playersOnly) {
             return;
         }
 

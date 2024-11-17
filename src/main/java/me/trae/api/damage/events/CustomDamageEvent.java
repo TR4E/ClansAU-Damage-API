@@ -1,6 +1,5 @@
 package me.trae.api.damage.events;
 
-import com.mysql.cj.protocol.x.XProtocol;
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.interfaces.ICustomDamageEvent;
