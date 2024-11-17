@@ -64,6 +64,10 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
+        if (this.getInstance(Core.class).isServerStopping()) {
+            return;
+        }
+
         if (this.getManager().isSafeOnLogByPlayer(player)) {
             return;
         }
