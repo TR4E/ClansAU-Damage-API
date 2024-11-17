@@ -24,7 +24,7 @@ import java.util.Collections;
 
 public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager> {
 
-    @ConfigInject(type = Boolean.class, name = "Players-Only", defaultValue = "true")
+    @ConfigInject(type = Boolean.class, path = "Players-Only", defaultValue = "true")
     private boolean playersOnly;
 
     public HandleCustomDeathMessage(final DeathManager manager) {
