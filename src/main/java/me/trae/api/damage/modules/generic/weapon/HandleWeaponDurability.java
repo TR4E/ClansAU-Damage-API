@@ -5,14 +5,12 @@ import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.events.WeaponDurabilityEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
-import me.trae.core.utility.UtilJava;
+import me.trae.core.utility.UtilItem;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.enums.WeaponMaterialType;
 import me.trae.core.utility.enums.WeaponSlotType;
-import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,24 +66,10 @@ public class HandleWeaponDurability extends SpigotListener<Core, DamageManager> 
             return;
         }
 
-        this.handleDurability(damager, itemStack);
+        UtilItem.takeDurability(damager, itemStack, false);
     }
 
     private boolean canTakeDurability(final ItemStack itemStack) {
         return itemStack.getType().getMaxDurability() > 0;
-    }
-
-    private void handleDurability(final LivingEntity damager, final ItemStack itemStack) {
-        if (itemStack.getDurability() >= itemStack.getType().getMaxDurability()) {
-            damager.getEquipment().setItemInHand(null);
-
-            new SoundCreator(Sound.ITEM_BREAK).play(damager.getLocation());
-        } else {
-            itemStack.setDurability((short) (itemStack.getDurability() + 1));
-        }
-
-        if (damager instanceof Player) {
-            UtilJava.cast(Player.class, damager).updateInventory();
-        }
     }
 }

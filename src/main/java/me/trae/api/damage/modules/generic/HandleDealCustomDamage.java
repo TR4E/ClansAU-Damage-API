@@ -7,7 +7,6 @@ import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMath;
-import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.UtilServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.EntityEffect;
@@ -91,7 +90,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
 
         event.getDamagee().playEffect(EntityEffect.DEATH);
 
-        CustomDamageEvent data = UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
+        CustomDamageEvent data = this.getInstance().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
         if (data == null) {
             data = event;
         }

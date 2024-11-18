@@ -11,6 +11,7 @@ import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.objects.SoundCreator;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -49,6 +50,8 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
 
         this.damage = damage;
         this.knockback = 1.0D;
+
+        this.soundCreator = new SoundCreator(Sound.HURT_FLESH);
 
         this.causeString = DamageConstants.createDefaultCauseString(this);
         this.reasonString = DamageConstants.createDefaultReasonString(this);
