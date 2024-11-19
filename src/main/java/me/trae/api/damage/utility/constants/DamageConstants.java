@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class DamageConstants {
 
-    public static Sound getEntityHurtSound(final Entity entity) {
+    public static Sound getEntityHurtSound(final LivingEntity entity) {
         switch (entity.getType()) {
             case BLAZE:
                 return Sound.BLAZE_HIT;
@@ -54,7 +54,7 @@ public class DamageConstants {
         return Sound.HURT_FLESH;
     }
 
-    public static Sound getEntityDeathSound(final Entity entity) {
+    public static Sound getEntityDeathSound(final LivingEntity entity) {
         switch (entity.getType()) {
             case BAT:
                 return Sound.BAT_DEATH;

@@ -7,8 +7,7 @@ import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.Sound;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
@@ -28,12 +27,16 @@ public class HandleCustomDamageSound extends SpigotListener<Core, DamageManager>
             return;
         }
 
+        if (!(event.getDamagee() instanceof LivingEntity)) {
+            return;
+        }
+
         SoundCreator soundCreator = event.getSoundCreator();
 
-        final Entity damagee = event.getDamagee();
+        final LivingEntity damagee = event.getDamageeByClass(LivingEntity.class);
 
         if (soundCreator.getSound() == Sound.HURT_FLESH) {
-            final Sound sound = (event.getDamageeByClass(Damageable.class).getHealth() > 0.0D ? DamageConstants.getEntityHurtSound(damagee) : DamageConstants.getEntityDeathSound(damagee));
+            final Sound sound = (event.getDamageeByClass(LivingEntity.class).getHealth() > 0.0D ? DamageConstants.getEntityHurtSound(damagee) : DamageConstants.getEntityDeathSound(damagee));
             if (sound != null) {
                 soundCreator = new SoundCreator(sound);
             }

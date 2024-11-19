@@ -64,10 +64,26 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
     }
 
     private boolean isValid(final EntityDamageEvent entityDamageEvent) {
+        final Entity entity = entityDamageEvent.getEntity();
+
+        if (entity instanceof FishHook) {
+            return false;
+        }
+
+        if (entity instanceof Fireball) {
+            return false;
+        }
+
         if (entityDamageEvent instanceof EntityDamageByEntityEvent) {
             final EntityDamageByEntityEvent entityDamageByEntityEvent = UtilJava.cast(EntityDamageByEntityEvent.class, entityDamageEvent);
 
-            if (entityDamageByEntityEvent.getDamager() instanceof FishHook) {
+            final Entity damager = entityDamageByEntityEvent.getDamager();
+
+            if (damager instanceof FishHook) {
+                return false;
+            }
+
+            if (damager instanceof Fireball) {
                 return false;
             }
         }

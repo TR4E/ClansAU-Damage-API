@@ -90,8 +90,12 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
             return 800L;
         }
 
+        if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+            return 200L;
+        }
+
         if (event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
-            return 800L;
+            return 1L;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
