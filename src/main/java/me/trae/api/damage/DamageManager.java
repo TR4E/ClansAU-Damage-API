@@ -1,5 +1,6 @@
 package me.trae.api.damage;
 
+import me.trae.api.damage.commands.KillCommand;
 import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.interfaces.IDamageManager;
@@ -29,6 +30,9 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
     @Override
     public void registerModules() {
+        // Commands
+        addModule(new KillCommand(this));
+
         // General Modules
         addModule(new HandlePlaySoundOnArrowHitEntity(this));
 

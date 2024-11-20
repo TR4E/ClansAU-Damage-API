@@ -42,8 +42,6 @@ public class HandleDamageReasonCheckForNewDamage extends SpigotListener<Core, Da
             return;
         }
 
-        System.out.println("Removed reason");
-
         this.getManager().removeLastReason(damagee, damager);
     }
 }
