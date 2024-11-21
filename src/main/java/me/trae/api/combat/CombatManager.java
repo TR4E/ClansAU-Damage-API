@@ -3,9 +3,7 @@ package me.trae.api.combat;
 import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
-import me.trae.api.combat.modules.HandleCombatLogOnPlayerJoinAndQuit;
-import me.trae.api.combat.modules.HandleCombatLogUpdater;
-import me.trae.api.combat.modules.HandleCombatUpdater;
+import me.trae.api.combat.modules.*;
 import me.trae.api.combat.npc.CombatNPC;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
@@ -39,6 +37,8 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     public void registerModules() {
         addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
         addModule(new HandleCombatLogUpdater(this));
+        addModule(new HandleCombatOnPlayerDamage(this));
+        addModule(new HandleCombatOnPlayerDeath(this));
         addModule(new HandleCombatUpdater(this));
     }
 
@@ -75,6 +75,10 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public boolean isSafeOnLogByPlayer(final Player player) {
+        if (this.getInstance().isServerStopping()) {
+            return true;
+        }
+
         if (Arrays.asList(GameMode.CREATIVE, GameMode.SPECTATOR).contains(player.getGameMode())) {
             return true;
         }

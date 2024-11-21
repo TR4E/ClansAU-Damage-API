@@ -60,13 +60,9 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
         this.getManager().addCombatNpc(combatNPC);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-
-        if (this.getInstance().isServerStopping()) {
-            return;
-        }
 
         if (this.getManager().isSafeOnLogByPlayer(player)) {
             return;

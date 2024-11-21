@@ -34,12 +34,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
 
         final String key = event.hasDamager() ? event.getDamager().getUniqueId().toString() : event.getCause().name();
 
-        if (map.containsKey(key)) {
-            if (UtilTime.elapsed(map.get(key))) {
-                map.remove(key);
-                return false;
-            }
-
+        if (map.containsKey(key) && !(UtilTime.elapsed(map.get(key)))) {
             return true;
         }
 
@@ -75,7 +70,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            return 700L;
+            return 400L;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.POISON) {
