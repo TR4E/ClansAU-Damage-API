@@ -5,19 +5,22 @@ import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.utility.enums.WeaponMaterialType;
 import me.trae.core.utility.enums.WeaponSlotType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 
 public class WeaponReductionEvent extends CustomCancellableEvent implements IWeaponReductionEvent {
 
     private final WeaponSlotType slotType;
     private final WeaponMaterialType materialType;
     private final LivingEntity entity;
+    private final ItemStack itemStack;
 
     private double reduction;
 
-    public WeaponReductionEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final LivingEntity entity, final double reduction) {
+    public WeaponReductionEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final LivingEntity entity, final ItemStack itemStack, final double reduction) {
         this.slotType = slotType;
         this.materialType = materialType;
         this.entity = entity;
+        this.itemStack = itemStack;
         this.reduction = reduction;
     }
 
@@ -29,6 +32,11 @@ public class WeaponReductionEvent extends CustomCancellableEvent implements IWea
     @Override
     public WeaponMaterialType getMaterialType() {
         return this.materialType;
+    }
+
+    @Override
+    public ItemStack getItemStack() {
+        return this.itemStack;
     }
 
     @Override

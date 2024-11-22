@@ -17,7 +17,7 @@ public class HandleCustomDamageSound extends SpigotListener<Core, DamageManager>
         super(manager);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onCustomDamage(final CustomDamageEvent event) {
         if (event.isCancelled()) {
             return;

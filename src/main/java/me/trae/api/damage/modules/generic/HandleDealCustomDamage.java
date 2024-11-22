@@ -24,7 +24,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
         super(manager);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCustomDamage(final CustomDamageEvent event) {
         if (event.isCancelled()) {
             return;
@@ -54,6 +54,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
         }
 
         if (entityLivingDamagee.getHealth() <= 0.0F) {
+            event.setKnockback(0.0D);
             this.handleDeath(event, entityLivingDamagee, entityLivingDamager);
         }
     }

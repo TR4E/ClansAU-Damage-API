@@ -47,34 +47,23 @@ public class HandleWeaponReduction extends SpigotListener<Core, DamageManager> {
             return;
         }
 
-        final double defaultReduction = this.getValueByMaterial(itemStack.getType());
-        if (defaultReduction == 0.0D) {
+        final double defaultReduction = this.getValueByItemStack(itemStack);
+
+        final WeaponReductionEvent weaponReductionEvent = new WeaponReductionEvent(slotType, materialType, damager, itemStack, defaultReduction);
+        UtilServer.callEvent(weaponReductionEvent);
+        if (weaponReductionEvent.isCancelled()) {
             return;
         }
 
-        final WeaponReductionEvent weaponReductionEvent = new WeaponReductionEvent(slotType, materialType, damager, defaultReduction);
-        UtilServer.callEvent(weaponReductionEvent);
-        if (weaponReductionEvent.isCancelled()) {
+        if (weaponReductionEvent.getReduction() == 0.0D) {
             return;
         }
 
         event.setDamage(weaponReductionEvent.getReduction());
     }
 
-    private double getValueByMaterial(final Material material) {
-        switch (material) {
-            case DIAMOND_SWORD:
-                return 6.0D;
-
-            case DIAMOND_AXE:
-            case GOLD_SWORD:
-                return 5.0D;
-
-            case GOLD_AXE:
-            case IRON_SWORD:
-                return 4.0D;
-
-            case IRON_AXE:
+    private double getValueByItemStack(final ItemStack itemStack) {
+        switch (itemStack.getType()) {
             case STONE_SWORD:
                 return 3.0D;
 
