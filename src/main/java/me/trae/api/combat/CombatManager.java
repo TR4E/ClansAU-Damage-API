@@ -74,7 +74,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     }
 
     @Override
-    public boolean isSafeOnLogByPlayer(final Player player) {
+    public boolean isSafeByPlayer(final Player player) {
         if (this.getInstance().isServerStopping()) {
             return true;
         }

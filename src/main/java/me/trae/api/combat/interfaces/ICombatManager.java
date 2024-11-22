@@ -20,7 +20,7 @@ public interface ICombatManager {
 
     boolean isCombatByPlayer(final Player player);
 
-    boolean isSafeOnLogByPlayer(final Player player);
+    boolean isSafeByPlayer(final Player player);
 
     Map<UUID, CombatNPC> getCombatNpcMap();
 

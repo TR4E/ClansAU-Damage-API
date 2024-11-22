@@ -1,7 +1,6 @@
 package me.trae.api.combat.modules;
 
 import me.trae.api.combat.CombatManager;
-import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
