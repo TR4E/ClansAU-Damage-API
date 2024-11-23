@@ -54,7 +54,7 @@ public class HandleArmourDurability extends SpigotListener<Core, DamageManager> 
                 continue;
             }
 
-            UtilItem.takeDurability(damagee, itemStack, true);
+            UtilItem.takeDurability(damagee, itemStack, true, true);
         }
     }
 }

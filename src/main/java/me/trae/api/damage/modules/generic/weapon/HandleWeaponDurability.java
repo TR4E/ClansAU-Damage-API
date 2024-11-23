@@ -66,7 +66,7 @@ public class HandleWeaponDurability extends SpigotListener<Core, DamageManager> 
             return;
         }
 
-        UtilItem.takeDurability(damager, itemStack, false);
+        UtilItem.takeDurability(damager, itemStack, false, true);
     }
 
     private boolean canTakeDurability(final ItemStack itemStack) {
