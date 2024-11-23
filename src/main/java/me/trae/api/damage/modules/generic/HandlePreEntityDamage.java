@@ -2,12 +2,11 @@ package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
-import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -99,17 +98,9 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
             return true;
         }
 
-        if (damagee instanceof Player) {
-            final Player damageePlayer = event.getDamageeByClass(Player.class);
-
-            if (!(Arrays.asList(EntityDamageEvent.DamageCause.SUICIDE, EntityDamageEvent.DamageCause.VOID).contains(event.getCause()))) {
-                if (Arrays.asList(GameMode.CREATIVE, GameMode.SPECTATOR).contains(damageePlayer.getGameMode())) {
-                    return true;
-                }
-
-                if (UtilJava.cast(CraftPlayer.class, damageePlayer).getHandle().isSpectator()) {
-                    return true;
-                }
+        if (!(Arrays.asList(EntityDamageEvent.DamageCause.SUICIDE, EntityDamageEvent.DamageCause.VOID).contains(event.getCause()))) {
+            if (UtilDamage.isInvulnerable(event.getDamagee())) {
+                return true;
             }
         }
 
