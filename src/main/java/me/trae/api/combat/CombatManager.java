@@ -5,6 +5,7 @@ import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
 import me.trae.api.combat.modules.*;
 import me.trae.api.combat.npc.CombatNPC;
+import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
@@ -79,11 +80,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
             return true;
         }
 
-        if (Arrays.asList(GameMode.CREATIVE, GameMode.SPECTATOR).contains(player.getGameMode())) {
-            return true;
-        }
-
-        if (UtilPlayer.getCraftPlayer(player).getHandle().isSpectator()) {
+        if (UtilDamage.isInvulnerable(player)) {
             return true;
         }
 
