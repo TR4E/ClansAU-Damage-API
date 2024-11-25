@@ -9,17 +9,14 @@ import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.framework.SpigotManager;
-import me.trae.core.utility.UtilPlayer;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.weapon.WeaponManager;
 import me.trae.core.weapon.models.ValuableWeapon;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

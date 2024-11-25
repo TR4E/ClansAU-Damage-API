@@ -170,10 +170,15 @@ public class DamageEvent extends CustomCancellableEvent implements IDamageEvent 
     }
 
     @Override
-    public void setReason(final String name, final long duration) {
-        this.reason = new DamageReason(name, duration);
+    public void setReason(final DamageReason reason) {
+        this.reason = reason;
 
         UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).addLastReason(this.getDamagee(), this.getDamager(), this.getReason());
+    }
+
+    @Override
+    public void setReason(final String name, final long duration) {
+        this.setReason(new DamageReason(name, duration));
     }
 
     @Override

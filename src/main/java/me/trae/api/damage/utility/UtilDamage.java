@@ -21,6 +21,14 @@ public class UtilDamage {
         UtilServer.callEvent(event);
     }
 
+    public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage) {
+        UtilServer.callEvent(new CustomPreDamageEvent(damagee, damager, cause, damage));
+    }
+
+    public static void damage(final Entity damagee, final EntityDamageEvent.DamageCause cause, final double damage) {
+        UtilServer.callEvent(new CustomPreDamageEvent(damagee, cause, damage));
+    }
+
     public static boolean isInvulnerable(final Entity entity) {
         if (entity instanceof Player) {
             final Player player = UtilJava.cast(Player.class, entity);

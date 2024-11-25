@@ -19,6 +19,16 @@ public class DamageReason implements IDamageReason {
     }
 
     @Override
+    public String getExtraName() {
+        return "";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.getName() + this.getExtraName();
+    }
+
+    @Override
     public long getSystemTime() {
         return this.systemTime;
     }

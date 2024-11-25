@@ -80,6 +80,8 @@ public interface IDamageEvent {
 
     DamageReason getReason();
 
+    void setReason(final DamageReason reason);
+
     void setReason(final String name, final long duration);
 
     default boolean hasReason() {
