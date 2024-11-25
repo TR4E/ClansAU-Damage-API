@@ -1,12 +1,10 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.api.damage.events.DamageDelayEvent;
+import me.trae.api.damage.events.damage.CustomPreDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilBlock;
-import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.UtilTime;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,7 +23,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         super(manager);
     }
 
-    private boolean isDelayed(final CustomDamageEvent event, final long delay) {
+    private boolean isDelayed(final CustomPreDamageEvent event, final long delay) {
         if (!(this.MAP.containsKey(event.getDamagee().getUniqueId()))) {
             this.MAP.put(event.getDamagee().getUniqueId(), new HashMap<>());
         }
@@ -42,20 +40,18 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         return false;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onCustomPreDamage(final CustomPreDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }
 
-        final DamageDelayEvent damageDelayEvent = new DamageDelayEvent(event, this.getDefaultDamageDelay(event));
-        UtilServer.callEvent(damageDelayEvent);
-        if (damageDelayEvent.isCancelled()) {
-            return;
+        if (!(event.hasDelay())) {
+            event.setDelay(this.getDefaultDamageDelay(event));
         }
 
-        if (damageDelayEvent.hasDelay()) {
-            if (!(this.isDelayed(event, damageDelayEvent.getDelay()))) {
+        if (event.hasDelay()) {
+            if (!(this.isDelayed(event, event.getDelay()))) {
                 return;
             }
         }
@@ -63,7 +59,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         event.setCancelled(true);
     }
 
-    private long getDefaultDamageDelay(final CustomDamageEvent event) {
+    private long getDefaultDamageDelay(final CustomPreDamageEvent event) {
         // Already in lava
         if (Arrays.asList(EntityDamageEvent.DamageCause.FIRE, EntityDamageEvent.DamageCause.FIRE_TICK).contains(event.getCause()) && UtilBlock.isInLava(event.getDamagee().getLocation())) {
             return 0L;

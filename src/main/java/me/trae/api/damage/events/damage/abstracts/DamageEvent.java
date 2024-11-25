@@ -1,13 +1,12 @@
-package me.trae.api.damage.events;
+package me.trae.api.damage.events.damage.abstracts;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
-import me.trae.api.damage.events.interfaces.ICustomDamageEvent;
+import me.trae.api.damage.events.damage.abstracts.interfaces.IDamageEvent;
 import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.core.Core;
 import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.player.events.PlayerDisplayNameEvent;
-import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.objects.SoundCreator;
@@ -16,11 +15,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class CustomDamageEvent extends CustomCancellableEvent implements ICustomDamageEvent {
+public class DamageEvent extends CustomCancellableEvent implements IDamageEvent {
 
     private final long systemTime;
 
@@ -30,13 +28,40 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     private final String causeString, reasonString;
 
     private ItemStack itemStack;
+
     private double damage, knockback;
+    private long delay;
+
     private SoundCreator soundCreator;
     private DamageReason reason;
 
     private String damageeName, damagerName;
 
-    public CustomDamageEvent(final Entity damagee, final Entity damager, final Projectile projectile, final EntityDamageEvent.DamageCause cause, final double damage) {
+    public DamageEvent(final IDamageEvent event) {
+        this.systemTime = event.getSystemTime();
+
+        this.damagee = event.getDamagee();
+        this.damager = event.getDamager();
+        this.projectile = event.getProjectile();
+        this.cause = event.getCause();
+        this.causeString = event.getCauseString();
+        this.reasonString = event.getReasonString();
+
+        this.itemStack = event.getItemStack();
+
+        this.damage = event.getDamage();
+        this.knockback = event.getKnockback();
+        this.delay = event.getDelay();
+
+        this.soundCreator = event.getSoundCreator();
+        this.reason = event.getReason();
+
+        this.damageeName = event.getDamageeName();
+        this.damagerName = event.getDamagerName();
+    }
+
+    // PreDamageEvent
+    public DamageEvent(final Entity damagee, final Entity damager, final Projectile projectile, final EntityDamageEvent.DamageCause cause, final double damage) {
         this.systemTime = System.currentTimeMillis();
 
         this.damagee = damagee;
@@ -50,6 +75,7 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
 
         this.damage = damage;
         this.knockback = 1.0D;
+        this.delay = 0L;
 
         this.soundCreator = new SoundCreator(Sound.HURT_FLESH);
 
@@ -66,26 +92,6 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
             this.damageeName = String.format("<yellow>%s", this.getDamagee().getName());
             this.damagerName = String.format("<yellow>%s", (this.getDamager() != null ? this.getDamager().getName() : this.getCauseString()));
         }
-    }
-
-    public CustomDamageEvent(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage) {
-        this(damagee, damager, null, cause, damage);
-    }
-
-    public CustomDamageEvent(final Entity damagee, final EntityDamageEvent.DamageCause cause, final double damage) {
-        this(damagee, null, null, cause, damage);
-    }
-
-    public CustomDamageEvent(final EntityDamageEvent event) {
-        this(event.getEntity(), null, null, event.getCause(), event.getDamage());
-    }
-
-    public CustomDamageEvent(final EntityDamageByEntityEvent event) {
-        this(event.getEntity(), event.getDamager(), null, event.getCause(), event.getDamage());
-    }
-
-    public CustomDamageEvent(final EntityDamageByEntityEvent event, final Projectile projectile) {
-        this(event.getEntity(), UtilJava.cast(Entity.class, projectile.getShooter()), projectile, EntityDamageEvent.DamageCause.PROJECTILE, event.getDamage());
     }
 
     @Override
@@ -136,6 +142,16 @@ public class CustomDamageEvent extends CustomCancellableEvent implements ICustom
     @Override
     public void setKnockback(final double knockback) {
         this.knockback = knockback;
+    }
+
+    @Override
+    public long getDelay() {
+        return this.delay;
+    }
+
+    @Override
+    public void setDelay(final long delay) {
+        this.delay = delay;
     }
 
     @Override

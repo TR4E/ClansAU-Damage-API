@@ -1,7 +1,7 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
@@ -25,7 +25,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -59,13 +59,13 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
         }
     }
 
-    private void handleDamage(final CustomDamageEvent event, final EntityLiving entityLivingDamagee) {
+    private void handleDamage(final CustomPostDamageEvent event, final EntityLiving entityLivingDamagee) {
         event.getDamagee().playEffect(EntityEffect.HURT);
 
         entityLivingDamagee.setHealth(UtilMath.getMinAndMax(Float.class, 0.0F, entityLivingDamagee.getMaxHealth(), entityLivingDamagee.getHealth() - (float) event.getDamage()));
     }
 
-    private void handleDeath(final CustomDamageEvent event, final EntityLiving entityLivingDamagee, final EntityLiving entityLivingDamager) {
+    private void handleDeath(final CustomPostDamageEvent event, final EntityLiving entityLivingDamagee, final EntityLiving entityLivingDamager) {
         DamageSource damageSource = DamageSource.GENERIC;
 
         final Entity damager = event.getDamager();
@@ -91,7 +91,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
 
         event.getDamagee().playEffect(EntityEffect.DEATH);
 
-        CustomDamageEvent data = this.getInstance().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
+        CustomPostDamageEvent data = this.getInstance().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
         if (data == null) {
             data = event;
         }

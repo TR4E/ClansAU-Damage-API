@@ -1,4 +1,4 @@
-package me.trae.api.damage.events.interfaces;
+package me.trae.api.damage.events.damage.abstracts.interfaces;
 
 import me.trae.api.damage.data.DamageReason;
 import me.trae.core.utility.UtilJava;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public interface ICustomDamageEvent {
+public interface IDamageEvent {
 
     long getSystemTime();
 
@@ -60,6 +60,14 @@ public interface ICustomDamageEvent {
 
     default boolean hasKnockback() {
         return this.getKnockback() > 0.0D;
+    }
+
+    long getDelay();
+
+    void setDelay(final long delay);
+
+    default boolean hasDelay() {
+        return this.getDelay() > 0L;
     }
 
     SoundCreator getSoundCreator();

@@ -2,7 +2,7 @@ package me.trae.api.death.modules;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.api.death.events.CustomDeathMessageEvent;
@@ -65,7 +65,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
         final String entityName = event.getEntityName();
         String killerName = event.getKillerName();
 
-        final CustomDamageEvent damageEvent = event.getDeathEvent().getDamageEvent();
+        final CustomPostDamageEvent damageEvent = event.getDeathEvent().getDamageEvent();
 
         if (damageEvent.getCause() == EntityDamageEvent.DamageCause.SUICIDE) {
             UtilMessage.simpleMessage(target, "Death", "<var> committed suicide.", Collections.singletonList(entityName));
@@ -85,7 +85,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
         final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {
-            reason = UtilColor.applyIfNotMatched(ChatColor.valueOf(this.customReasonChatColor), damageReason.getName());
+            reason = UtilColor.applyIfMissing(ChatColor.valueOf(this.customReasonChatColor), damageReason.getName());
         }
 
         if ((damageReason == null || damageReason.hasExpired()) && !(reason.contains("Air"))) {

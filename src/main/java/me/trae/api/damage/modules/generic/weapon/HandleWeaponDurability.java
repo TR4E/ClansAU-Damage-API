@@ -1,8 +1,8 @@
 package me.trae.api.damage.modules.generic.weapon;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
-import me.trae.api.damage.events.WeaponDurabilityEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
+import me.trae.api.damage.events.weapon.WeaponDurabilityEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilItem;
@@ -26,7 +26,7 @@ public class HandleWeaponDurability extends SpigotListener<Core, DamageManager> 
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }

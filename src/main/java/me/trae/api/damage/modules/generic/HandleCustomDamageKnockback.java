@@ -1,8 +1,8 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
 import me.trae.api.damage.events.CustomKnockbackEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilServer;
@@ -18,7 +18,7 @@ public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageMana
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }

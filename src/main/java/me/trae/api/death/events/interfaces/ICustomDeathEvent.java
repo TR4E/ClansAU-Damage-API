@@ -1,11 +1,11 @@
 package me.trae.api.death.events.interfaces;
 
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import org.bukkit.entity.LivingEntity;
 
 public interface ICustomDeathEvent {
 
-    CustomDamageEvent getDamageEvent();
+    CustomPostDamageEvent getDamageEvent();
 
     default LivingEntity getEntity() {
         return this.getDamageEvent().getDamageeByClass(LivingEntity.class);

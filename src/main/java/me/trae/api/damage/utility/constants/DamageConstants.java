@@ -1,6 +1,6 @@
 package me.trae.api.damage.utility.constants;
 
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.abstracts.DamageEvent;
 import me.trae.core.utility.UtilColor;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilString;
@@ -96,7 +96,7 @@ public class DamageConstants {
         return getEntityHurtSound(entity);
     }
 
-    public static String createDefaultCauseString(final CustomDamageEvent event) {
+    public static String createDefaultCauseString(final DamageEvent event) {
         final Entity damager = event.getDamager();
 
         if (damager instanceof TNTPrimed) {
@@ -106,7 +106,7 @@ public class DamageConstants {
         return UtilString.clean(event.getCause().name());
     }
 
-    public static String createDefaultReasonString(final CustomDamageEvent event) {
+    public static String createDefaultReasonString(final DamageEvent event) {
         String reason = null;
 
         if (event.getDamager() instanceof LivingEntity) {

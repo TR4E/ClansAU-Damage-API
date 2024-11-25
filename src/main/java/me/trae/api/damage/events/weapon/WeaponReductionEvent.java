@@ -1,6 +1,6 @@
-package me.trae.api.damage.events;
+package me.trae.api.damage.events.weapon;
 
-import me.trae.api.damage.events.interfaces.IWeaponReductionEvent;
+import me.trae.api.damage.events.weapon.interfaces.IWeaponReductionEvent;
 import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.utility.enums.WeaponMaterialType;
 import me.trae.core.utility.enums.WeaponSlotType;

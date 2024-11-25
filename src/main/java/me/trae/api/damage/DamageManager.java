@@ -2,7 +2,7 @@ package me.trae.api.damage;
 
 import me.trae.api.damage.commands.KillCommand;
 import me.trae.api.damage.data.DamageReason;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.damage.interfaces.IDamageManager;
 import me.trae.api.damage.modules.general.HandlePlaySoundOnArrowHitEntity;
 import me.trae.api.damage.modules.generic.*;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class DamageManager extends SpigotManager<Core> implements IDamageManager {
 
-    private final Map<UUID, CustomDamageEvent> LAST_DAMAGE_DATA_MAP = new HashMap<>();
+    private final Map<UUID, CustomPostDamageEvent> LAST_DAMAGE_DATA_MAP = new HashMap<>();
     private final Map<UUID, Map<UUID, DamageReason>> LAST_REASON_MAP = new HashMap<>();
 
     public DamageManager(final Core instance) {
@@ -54,12 +54,12 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
     }
 
     @Override
-    public Map<UUID, CustomDamageEvent> getLastDamageDataMap() {
+    public Map<UUID, CustomPostDamageEvent> getLastDamageDataMap() {
         return this.LAST_DAMAGE_DATA_MAP;
     }
 
     @Override
-    public void addLastDamageData(final CustomDamageEvent data) {
+    public void addLastDamageData(final CustomPostDamageEvent data) {
         if (data.getDamager() == null) {
             return;
         }
@@ -68,7 +68,7 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
     }
 
     @Override
-    public CustomDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
+    public CustomPostDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
         if (this.getLastDamageDataMap().containsKey(damagee.getUniqueId())) {
             return this.getLastDamageDataMap().remove(damagee.getUniqueId());
         }

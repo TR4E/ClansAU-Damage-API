@@ -1,7 +1,9 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
+import me.trae.api.damage.events.damage.CustomPreDamageEvent;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
@@ -33,16 +35,34 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
 
         event.setCancelled(true);
 
-        final CustomDamageEvent customDamageEvent = this.getCustomDamageEvent(event);
+        final CustomPreDamageEvent customPreDamageEvent = this.getCustomDamageEvent(event);
 
-        if (this.isInvulnerable(customDamageEvent)) {
+        if (this.isInvulnerable(customPreDamageEvent)) {
             return;
         }
 
-        UtilServer.callEvent(customDamageEvent);
+        UtilServer.callEvent(customPreDamageEvent);
     }
 
-    private CustomDamageEvent getCustomDamageEvent(final EntityDamageEvent entityDamageEvent) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onCustomPreDamage(final CustomPreDamageEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        UtilServer.callEvent(new CustomDamageEvent(event));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onCustomDamage(final CustomDamageEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        UtilServer.callEvent(new CustomPostDamageEvent(event));
+    }
+
+    private CustomPreDamageEvent getCustomDamageEvent(final EntityDamageEvent entityDamageEvent) {
         if (entityDamageEvent instanceof EntityDamageByEntityEvent) {
             final EntityDamageByEntityEvent entityDamageByEntityEvent = UtilJava.cast(EntityDamageByEntityEvent.class, entityDamageEvent);
 
@@ -53,13 +73,13 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
                     projectile.remove();
                 }
 
-                return new CustomDamageEvent(entityDamageByEntityEvent, projectile);
+                return new CustomPreDamageEvent(entityDamageByEntityEvent, projectile);
             }
 
-            return new CustomDamageEvent(entityDamageByEntityEvent);
+            return new CustomPreDamageEvent(entityDamageByEntityEvent);
         }
 
-        return new CustomDamageEvent(entityDamageEvent);
+        return new CustomPreDamageEvent(entityDamageEvent);
     }
 
     private boolean isValid(final EntityDamageEvent entityDamageEvent) {
@@ -90,7 +110,7 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         return true;
     }
 
-    private boolean isInvulnerable(final CustomDamageEvent event) {
+    private boolean isInvulnerable(final CustomPreDamageEvent event) {
         final Entity damagee = event.getDamagee();
         final Entity damager = event.getDamager();
 

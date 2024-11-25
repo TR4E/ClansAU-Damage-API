@@ -1,24 +1,24 @@
-package me.trae.api.damage.events;
+package me.trae.api.damage.events.armour;
 
-import me.trae.api.damage.events.interfaces.IArmourDurabilityEvent;
+import me.trae.api.damage.events.armour.interfaces.IArmourReductionEvent;
 import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.utility.enums.ArmourMaterialType;
 import me.trae.core.utility.enums.ArmourSlotType;
 import org.bukkit.entity.LivingEntity;
 
-public class ArmourDurabilityEvent extends CustomCancellableEvent implements IArmourDurabilityEvent {
+public class ArmourReductionEvent extends CustomCancellableEvent implements IArmourReductionEvent {
 
     private final ArmourSlotType slotType;
     private final ArmourMaterialType materialType;
     private final LivingEntity entity;
 
-    private int durability;
+    private double reduction;
 
-    public ArmourDurabilityEvent(final ArmourSlotType slotType, final ArmourMaterialType materialType, final LivingEntity entity, final int durability) {
+    public ArmourReductionEvent(final ArmourSlotType slotType, final ArmourMaterialType materialType, final LivingEntity entity, final double reduction) {
         this.slotType = slotType;
         this.materialType = materialType;
         this.entity = entity;
-        this.durability = durability;
+        this.reduction = reduction;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class ArmourDurabilityEvent extends CustomCancellableEvent implements IAr
     }
 
     @Override
-    public int getDurability() {
-        return this.durability;
+    public double getReduction() {
+        return this.reduction;
     }
 
     @Override
-    public void setDurability(final int durability) {
-        this.durability = durability;
+    public void setReduction(final double reduction) {
+        this.reduction = reduction;
     }
 }

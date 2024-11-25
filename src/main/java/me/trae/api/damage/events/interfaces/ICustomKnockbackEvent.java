@@ -1,10 +1,10 @@
 package me.trae.api.damage.events.interfaces;
 
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 
 public interface ICustomKnockbackEvent {
 
-    CustomDamageEvent getDamageEvent();
+    CustomPostDamageEvent getDamageEvent();
 
     double getKnockback();
 

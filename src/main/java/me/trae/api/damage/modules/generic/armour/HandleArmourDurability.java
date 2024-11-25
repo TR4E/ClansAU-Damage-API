@@ -1,8 +1,8 @@
 package me.trae.api.damage.modules.generic.armour;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.ArmourDurabilityEvent;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.armour.ArmourDurabilityEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilItem;
@@ -22,7 +22,7 @@ public class HandleArmourDurability extends SpigotListener<Core, DamageManager> 
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }

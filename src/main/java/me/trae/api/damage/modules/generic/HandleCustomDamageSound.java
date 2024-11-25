@@ -1,7 +1,7 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.damage.utility.constants.DamageConstants;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
@@ -18,7 +18,7 @@ public class HandleCustomDamageSound extends SpigotListener<Core, DamageManager>
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }

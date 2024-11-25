@@ -1,7 +1,7 @@
 package me.trae.api.combat.modules;
 
 import me.trae.api.combat.CombatManager;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ public class HandleCombatOnPlayerDamage extends SpigotListener<Core, CombatManag
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onCustomDamage(final CustomDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }

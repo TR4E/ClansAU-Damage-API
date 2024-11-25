@@ -1,7 +1,7 @@
 package me.trae.api.damage.interfaces;
 
 import me.trae.api.damage.data.DamageReason;
-import me.trae.api.damage.events.CustomDamageEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import org.bukkit.entity.Entity;
 
 import java.util.Map;
@@ -9,11 +9,11 @@ import java.util.UUID;
 
 public interface IDamageManager {
 
-    Map<UUID, CustomDamageEvent> getLastDamageDataMap();
+    Map<UUID, CustomPostDamageEvent> getLastDamageDataMap();
 
-    void addLastDamageData(final CustomDamageEvent data);
+    void addLastDamageData(final CustomPostDamageEvent data);
 
-    CustomDamageEvent getLastDamageDataByDamagee(final Entity damagee);
+    CustomPostDamageEvent getLastDamageDataByDamagee(final Entity damagee);
 
     Map<UUID, Map<UUID, DamageReason>> getLastReasonMap();
 
