@@ -16,7 +16,7 @@ public class HandleCombatUpdater extends SpigotUpdater<Core, CombatManager> {
         super(manager);
     }
 
-    @Update
+    @Update(delay = 250L, asynchronous = true)
     public void onUpdater() {
         this.getManager().getCombatMap().values().removeIf(combat -> {
             if (!(combat.hasExpired())) {
