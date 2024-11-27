@@ -3,6 +3,7 @@ package me.trae.api.damage.modules.generic;
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.damage.CustomPreDamageEvent;
 import me.trae.core.Core;
+import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilBlock;
 import me.trae.core.utility.UtilTime;
@@ -18,6 +19,33 @@ import java.util.UUID;
 public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager> {
 
     private final Map<UUID, Map<String, Long>> MAP = new HashMap<>();
+
+    @ConfigInject(type = Long.class, path = "Entity-Attack-Delay", defaultValue = "500")
+    private long entityAttackDelay;
+
+    @ConfigInject(type = Long.class, path = "Poison-Delay", defaultValue = "1_000")
+    private long poisonDelay;
+
+    @ConfigInject(type = Long.class, path = "Wither-Delay", defaultValue = "800")
+    private long witherDelay;
+
+    @ConfigInject(type = Long.class, path = "Suffocation-Delay", defaultValue = "800")
+    private long suffocationDelay;
+
+    @ConfigInject(type = Long.class, path = "Void-Delay", defaultValue = "200")
+    private long voidDelay;
+
+    @ConfigInject(type = Long.class, path = "Fire-Delay", defaultValue = "600")
+    private long fireDelay;
+
+    @ConfigInject(type = Long.class, path = "Fire-Tick-Delay", defaultValue = "1_000")
+    private long fireTickDelay;
+
+    @ConfigInject(type = Long.class, path = "Lava-Delay", defaultValue = "400")
+    private long lavaDelay;
+
+    @ConfigInject(type = Long.class, path = "Default-Delay", defaultValue = "1_000")
+    private long defaultDelay;
 
     public HandleCustomDamageDelay(final DamageManager manager) {
         super(manager);
@@ -66,37 +94,37 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            return 600L;
+            return this.entityAttackDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.POISON) {
-            return 1000L;
+            return this.poisonDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.WITHER) {
-            return 800L;
+            return this.witherDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
-            return 800L;
+            return this.suffocationDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
-            return 200L;
+            return this.voidDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
-            return 600L;
+            return this.fireDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
-            return 1000L;
+            return this.fireTickDelay;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.LAVA) {
-            return 400L;
+            return this.lavaDelay;
         }
 
-        return 1000L;
+        return this.defaultDelay;
     }
 }
