@@ -66,7 +66,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            return 400L;
+            return 600L;
         }
 
         if (event.getCause() == EntityDamageEvent.DamageCause.POISON) {
