@@ -41,7 +41,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onCustomDeath(final CustomDeathEvent event) {
-        if (!(event.getEntity() instanceof Player) && this.playersOnly) {
+        if (this.playersOnly && !(event.getEntity() instanceof Player)) {
             return;
         }
 
