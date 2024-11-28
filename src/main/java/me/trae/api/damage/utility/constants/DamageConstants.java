@@ -34,6 +34,8 @@ public class DamageConstants {
                 return Sound.WITHER_HURT;
             case WOLF:
                 return Sound.WOLF_HURT;
+            case PIG:
+                return Sound.PIG_IDLE;
             case ZOMBIE:
                 return Sound.ZOMBIE_HURT;
             case PIG_ZOMBIE:
@@ -76,6 +78,8 @@ public class DamageConstants {
                 return Sound.WITHER_DEATH;
             case WOLF:
                 return Sound.WOLF_DEATH;
+            case PIG:
+                return Sound.PIG_DEATH;
             case ZOMBIE:
                 return Sound.ZOMBIE_DEATH;
             case PIG_ZOMBIE:
