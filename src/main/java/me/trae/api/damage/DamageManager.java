@@ -38,7 +38,9 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
         // Generic Modules
         addModule(new HandleCustomDamageDelay(this));
+        addModule(new HandleCustomDamageDisplayOnPlayerLevel(this));
         addModule(new HandleCustomDamageKnockback(this));
+        addModule(new HandleCustomDamagePotionEffects(this));
         addModule(new HandleCustomDamageSound(this));
         addModule(new HandleDealCustomDamage(this));
         addModule(new HandlePreEntityDamage(this));
