@@ -9,4 +9,6 @@ public interface ICustomKnockbackEvent {
     double getKnockback();
 
     void setKnockback(final double knockback);
+
+    boolean hasKnockback();
 }

@@ -20,10 +20,6 @@ public class HandleCombatOnPlayerDeath extends SpigotListener<Core, CombatManage
             return;
         }
 
-        if (!(event.getKiller() instanceof Player)) {
-            return;
-        }
-
         final Player player = event.getEntityByClass(Player.class);
 
         this.getManager().removeCombat(player);

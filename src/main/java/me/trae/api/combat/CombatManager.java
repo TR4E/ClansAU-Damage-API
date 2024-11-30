@@ -50,15 +50,18 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
         final Combat combat = new Combat(player);
         this.getCombatMap().put(player.getUniqueId(), combat);
 
-
         UtilServer.callEvent(new CombatReceiveEvent(combat, player));
     }
 
     @Override
     public void removeCombat(final Player player) {
-        final Combat combat = this.getCombatMap().remove(player.getUniqueId());
+        if (!(this.getCombatMap().containsKey(player.getUniqueId()))) {
+            return;
+        }
 
-        UtilServer.callEvent(new CombatRemoveEvent(combat, player));
+        UtilServer.callEvent(new CombatRemoveEvent(this.getCombatMap().get(player.getUniqueId()), player));
+
+        this.getCombatMap().remove(player.getUniqueId());
     }
 
     @Override

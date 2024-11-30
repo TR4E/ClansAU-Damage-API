@@ -9,10 +9,8 @@ import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.util.Vector;
 
 public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageManager> {
 
@@ -22,10 +20,7 @@ public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageMana
     @ConfigInject(type = Double.class, path = "Post-Y", defaultValue = "0.4")
     private double postY;
 
-    @ConfigInject(type = Double.class, path = "Base-Strength", defaultValue = "0.4")
-    private double baseStrength;
-
-    @ConfigInject(type = Double.class, path = "Sprint-Strength-Addition", defaultValue = "0.6")
+    @ConfigInject(type = Double.class, path = "Sprint-Strength-Addition", defaultValue = "3.0")
     private double sprintStrengthAddition;
 
     public HandleCustomDamageKnockback(final DamageManager manager) {
@@ -59,31 +54,14 @@ public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageMana
             return;
         }
 
-        final Vector vector = this.getVector(damagee, damager);
+        UtilJava.call(damagee.getLocation().toVector().subtract(damager.getLocation().toVector()), vector -> {
+            vector.normalize();
 
-        damagee.setVelocity(vector);
-    }
+            vector.multiply(knockbackEvent.getKnockback());
 
-    private Vector getVector(final Entity damagee, final Entity damager) {
-        final Vector vector = damagee.getLocation().toVector().subtract(damager.getLocation().toVector());
+            vector.setY(0.3D * knockbackEvent.getKnockback());
 
-        vector.setY(this.preY);
-        vector.normalize();
-
-        vector.multiply(this.getStrength(damager));
-
-        vector.setY(this.postY);
-
-        return vector;
-    }
-
-    private double getStrength(final Entity damager) {
-        double strength = this.baseStrength;
-
-        if (damager instanceof Player && UtilJava.cast(Player.class, damager).isSprinting()) {
-            strength += this.sprintStrengthAddition;
-        }
-
-        return strength;
+            damagee.setVelocity(vector);
+        });
     }
 }

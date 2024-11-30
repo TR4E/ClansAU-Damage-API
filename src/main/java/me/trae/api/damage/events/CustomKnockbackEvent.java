@@ -28,4 +28,9 @@ public class CustomKnockbackEvent extends CustomCancellableEvent implements ICus
     public void setKnockback(final double knockback) {
         this.knockback = knockback;
     }
+
+    @Override
+    public boolean hasKnockback() {
+        return this.getKnockback() > 0.0D;
+    }
 }
