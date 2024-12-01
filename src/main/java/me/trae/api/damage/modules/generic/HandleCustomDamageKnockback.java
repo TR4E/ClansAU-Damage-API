@@ -4,24 +4,17 @@ import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.CustomKnockbackEvent;
 import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.core.Core;
-import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.types.frame.SpigotListener;
-import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilServer;
+import me.trae.core.utility.UtilVelocity;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.util.Vector;
 
 public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageManager> {
-
-    @ConfigInject(type = Double.class, path = "Pre-Y", defaultValue = "0.0")
-    private double preY;
-
-    @ConfigInject(type = Double.class, path = "Post-Y", defaultValue = "0.4")
-    private double postY;
-
-    @ConfigInject(type = Double.class, path = "Sprint-Strength-Addition", defaultValue = "3.0")
-    private double sprintStrengthAddition;
 
     public HandleCustomDamageKnockback(final DamageManager manager) {
         super(manager);
@@ -41,10 +34,7 @@ public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageMana
             return;
         }
 
-        final Entity damagee = event.getDamagee();
-        final Entity damager = event.getDamager();
-
-        if (damager == damagee) {
+        if (event.getDamagee().equals(event.getDamager())) {
             return;
         }
 
@@ -54,14 +44,31 @@ public class HandleCustomDamageKnockback extends SpigotListener<Core, DamageMana
             return;
         }
 
-        UtilJava.call(damagee.getLocation().toVector().subtract(damager.getLocation().toVector()), vector -> {
-            vector.normalize();
+        final Vector vector = this.getVector(event, knockbackEvent);
 
-            vector.multiply(knockbackEvent.getKnockback());
+        event.getDamagee().setVelocity(vector);
+    }
 
-            vector.setY(0.3D * knockbackEvent.getKnockback());
+    private Vector getVector(final CustomPostDamageEvent damageEvent, final CustomKnockbackEvent knockbackEvent) {
+        final Entity damagee = damageEvent.getDamagee();
+        final Entity damager = damageEvent.getDamager();
 
-            damagee.setVelocity(vector);
-        });
+        double baseKnockback = damageEvent.getDamage();
+
+        if (damageEvent.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && damageEvent.getDamagerByClass(Player.class).isSprinting()) {
+            baseKnockback += 2.0D;
+        }
+
+        baseKnockback = 0.5D + (baseKnockback * 0.2D);
+
+        final Vector vector = UtilVelocity.getTrajectory(damager.getLocation().toVector(), damagee.getLocation().toVector());
+
+        final double finalKnockback = baseKnockback * knockbackEvent.getKnockback();
+
+        vector.multiply(finalKnockback);
+
+        vector.setY(0.4D);
+
+        return vector;
     }
 }

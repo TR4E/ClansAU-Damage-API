@@ -37,6 +37,7 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
             public void remove() {
                 super.remove();
                 getManager().removeCombatNpc(this);
+                getManager().getCombatMap().remove(this.getUUID());
             }
 
             @Override
