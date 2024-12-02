@@ -27,7 +27,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
     @ConfigInject(type = Boolean.class, path = "Players-Only", defaultValue = "true")
     private boolean playersOnly;
 
-    @ConfigInject(type = String.class, path = "Custom-Reason-ChatColor", defaultValue = "DARK_GREEN")
+    @ConfigInject(type = String.class, path = "Custom-Reason-ChatColor", defaultValue = "GREEN")
     private String customReasonChatColor;
 
     public HandleCustomDeathMessage(final DeathManager manager) {

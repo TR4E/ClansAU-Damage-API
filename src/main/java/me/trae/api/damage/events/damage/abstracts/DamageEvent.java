@@ -73,7 +73,7 @@ public class DamageEvent extends CustomCancellableEvent implements IDamageEvent 
             this.itemStack = this.getDamagerByClass(LivingEntity.class).getEquipment().getItemInHand();
         }
 
-        this.damage = damage;
+        this.damage = cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK && UtilPlugin.isInstance("Champions") ? 1.0D : damage;
         this.knockback = 1.0D;
         this.delay = 0L;
 
