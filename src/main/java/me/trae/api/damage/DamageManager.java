@@ -10,18 +10,18 @@ import me.trae.api.damage.modules.generic.armour.HandleArmourDurability;
 import me.trae.api.damage.modules.generic.armour.HandleArmourReduction;
 import me.trae.api.damage.modules.generic.weapon.HandleWeaponDurability;
 import me.trae.api.damage.modules.generic.weapon.HandleWeaponReduction;
+import me.trae.api.damage.modules.system.HandleDamageDataUpdater;
 import me.trae.api.damage.modules.system.HandleDamageReasonCheckForNewDamage;
 import me.trae.core.Core;
 import me.trae.core.framework.SpigotManager;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DamageManager extends SpigotManager<Core> implements IDamageManager {
 
-    private final Map<UUID, CustomPostDamageEvent> LAST_DAMAGE_DATA_MAP = new HashMap<>();
+    private final Map<UUID, List<CustomPostDamageEvent>> DAMAGE_DATA_MAP = new HashMap<>();
     private final Map<UUID, Map<UUID, DamageReason>> LAST_REASON_MAP = new HashMap<>();
 
     public DamageManager(final Core instance) {
@@ -44,35 +44,52 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
         addModule(new HandleCustomDamageSound(this));
         addModule(new HandleDealCustomDamage(this));
         addModule(new HandlePreEntityDamage(this));
+
         // Armour Modules
         addModule(new HandleArmourDurability(this));
         addModule(new HandleArmourReduction(this));
+
         // Weapon Modules
         addModule(new HandleWeaponDurability(this));
         addModule(new HandleWeaponReduction(this));
 
         // System Modules
+        addModule(new HandleDamageDataUpdater(this));
         addModule(new HandleDamageReasonCheckForNewDamage(this));
     }
 
     @Override
-    public Map<UUID, CustomPostDamageEvent> getLastDamageDataMap() {
-        return this.LAST_DAMAGE_DATA_MAP;
+    public Map<UUID, List<CustomPostDamageEvent>> getDamageDataMap() {
+        return this.DAMAGE_DATA_MAP;
     }
 
     @Override
-    public void addLastDamageData(final CustomPostDamageEvent data) {
-        if (data.getDamager() == null) {
+    public void addDamageData(final CustomPostDamageEvent data) {
+        if (!(data.getDamager() instanceof Player)) {
             return;
         }
 
-        this.getLastDamageDataMap().put(data.getDamagee().getUniqueId(), data);
+        if (!(this.getDamageDataMap().containsKey(data.getDamagee().getUniqueId()))) {
+            this.getDamageDataMap().put(data.getDamagee().getUniqueId(), new ArrayList<>());
+        }
+
+        final List<CustomPostDamageEvent> list = this.getDamageDataMap().get(data.getDamagee().getUniqueId());
+
+        list.removeIf(event -> event.getDamager().equals(data.getDamager()));
+
+        list.add(data);
+    }
+
+    @Override
+    public List<CustomPostDamageEvent> getListOfDamageDataByDamagee(final Entity damagee) {
+        return this.getDamageDataMap().getOrDefault(damagee.getUniqueId(), new ArrayList<>());
     }
 
     @Override
     public CustomPostDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
-        if (this.getLastDamageDataMap().containsKey(damagee.getUniqueId())) {
-            return this.getLastDamageDataMap().remove(damagee.getUniqueId());
+        final List<CustomPostDamageEvent> list = this.getListOfDamageDataByDamagee(damagee);
+        if (!(list.isEmpty())) {
+            return list.remove(list.size() - 1);
         }
 
         return null;

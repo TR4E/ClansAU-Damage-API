@@ -10,6 +10,7 @@ import me.trae.core.Core;
 import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.types.frame.SpigotListener;
 import me.trae.core.utility.UtilColor;
+import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMessage;
 import me.trae.core.utility.UtilServer;
 import org.bukkit.ChatColor;
@@ -83,7 +84,9 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
         String reason = damageEvent.getReasonString();
 
-        final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
+        final DamageManager damageManager = this.getInstance().getManagerByClass(DamageManager.class);
+
+        final DamageReason damageReason = damageManager.getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {
             reason = UtilColor.applyIfMissing(ChatColor.valueOf(this.customReasonChatColor), damageReason.getDisplayName());
         }
@@ -92,6 +95,14 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
             reason = String.format("a %s", reason);
         }
 
-        UtilMessage.simpleMessage(target, "Death", "<var> was killed by <var> with <var>.", Arrays.asList(entityName, killerName, reason));
+        final String assistsString = UtilJava.get(event.getDeathEvent().getAssists(), assists -> {
+            if (assists == 0) {
+                return "";
+            }
+
+            return String.format(" + %s", assists);
+        });
+
+        UtilMessage.simpleMessage(target, "Death", "<var> was killed by <var> with <var>.", Arrays.asList(entityName, killerName + assistsString, reason));
     }
 }

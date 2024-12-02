@@ -22,4 +22,6 @@ public interface ICustomDeathEvent {
     default <E extends LivingEntity> E getKillerByClass(final Class<E> clazz) {
         return this.getDamageEvent().getDamagerByClass(clazz);
     }
+
+    int getAssists();
 }

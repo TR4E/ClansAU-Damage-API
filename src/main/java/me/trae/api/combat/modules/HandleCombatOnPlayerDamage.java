@@ -32,6 +32,10 @@ public class HandleCombatOnPlayerDamage extends SpigotListener<Core, CombatManag
         final Player damagee = event.getDamageeByClass(Player.class);
         final Player damager = event.getDamagerByClass(Player.class);
 
+        if (damagee.equals(damager)) {
+            return;
+        }
+
         final ClientManager clientManager = this.getInstance().getManagerByClass(ClientManager.class);
 
         if (clientManager.getClientByPlayer(damagee).isAdministrating()) {

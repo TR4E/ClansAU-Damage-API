@@ -47,7 +47,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
             entityLivingDamagee.b(entityLivingDamager);
         }
 
-        this.getManager().addLastDamageData(event);
+        this.getManager().addDamageData(event);
 
         if (entityLivingDamagee.getHealth() > 0.0F) {
             this.handleDamage(event, entityLivingDamagee);
