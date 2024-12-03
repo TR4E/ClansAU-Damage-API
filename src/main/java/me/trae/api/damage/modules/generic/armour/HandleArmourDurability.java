@@ -11,6 +11,7 @@ import me.trae.core.utility.enums.ArmourMaterialType;
 import me.trae.core.utility.enums.ArmourSlotType;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +52,9 @@ public class HandleArmourDurability extends SpigotListener<Core, DamageManager> 
             final ArmourDurabilityEvent armourDurabilityEvent = new ArmourDurabilityEvent(slotType, materialType, damagee, 1);
             UtilServer.callEvent(armourDurabilityEvent);
             if (armourDurabilityEvent.isCancelled()) {
+                if (damagee instanceof Player) {
+                    event.getDamageeByClass(Player.class).updateInventory();
+                }
                 continue;
             }
 
