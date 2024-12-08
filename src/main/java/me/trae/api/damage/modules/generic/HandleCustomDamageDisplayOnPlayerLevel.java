@@ -46,6 +46,10 @@ public class HandleCustomDamageDisplayOnPlayerLevel extends SpigotListener<Core,
             return;
         }
 
+        if (event.getDamagee().equals(event.getDamager())) {
+            return;
+        }
+
         final Player damager = event.getDamagerByClass(Player.class);
 
         damager.setLevel((int) Math.round(event.getDamage()));
