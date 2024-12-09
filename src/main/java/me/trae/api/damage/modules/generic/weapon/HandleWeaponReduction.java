@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class HandleWeaponReduction extends SpigotListener<Core, DamageManager> {
@@ -23,6 +24,10 @@ public class HandleWeaponReduction extends SpigotListener<Core, DamageManager> {
     @EventHandler(priority = EventPriority.LOW)
     public void onCustomPreDamage(final CustomPreDamageEvent event) {
         if (event.isCancelled()) {
+            return;
+        }
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             return;
         }
 

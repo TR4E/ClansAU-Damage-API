@@ -1,7 +1,10 @@
 package me.trae.api.damage.events.damage.abstracts.interfaces;
 
+import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.data.DamageReason;
+import me.trae.core.Core;
 import me.trae.core.utility.UtilJava;
+import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
@@ -83,6 +86,15 @@ public interface IDamageEvent {
     void setReason(final DamageReason reason);
 
     void setReason(final String name, final long duration);
+
+    default void setLightReason(final String name, final long duration) {
+        final DamageReason damageReason = UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).getLastReasonByDamagee(this.getDamagee(), this.getDamager());
+        if (damageReason != null && !(damageReason.getName().contains(name)) && !(damageReason.hasExpired())) {
+            return;
+        }
+
+        this.setReason(name, duration);
+    }
 
     default boolean hasReason() {
         return this.getReason() != null;
