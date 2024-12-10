@@ -60,9 +60,9 @@ public class HandleWeaponDurability extends SpigotListener<Core, DamageManager> 
             return;
         }
 
-        final WeaponDurabilityEvent weaponDurabilityEvent = new WeaponDurabilityEvent(slotType, materialType, damager, itemStack, 1);
+        final WeaponDurabilityEvent weaponDurabilityEvent = new WeaponDurabilityEvent(slotType, materialType, itemStack, damager, 1);
         UtilServer.callEvent(weaponDurabilityEvent);
-        if (weaponDurabilityEvent.isCancelled()) {
+        if (weaponDurabilityEvent.isCancelled() || weaponDurabilityEvent.getDurability() == 0) {
             if (event.getDamager() instanceof Player) {
                 event.getDamagerByClass(Player.class).updateInventory();
             }

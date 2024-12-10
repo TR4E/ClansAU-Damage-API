@@ -41,15 +41,21 @@ public class HandleCustomDamagePotionEffects extends SpigotListener<Core, Damage
         double damage = event.getDamage();
 
         if (UtilEntity.hasPotionEffect(damager, PotionEffectType.INCREASE_DAMAGE)) {
-            damage += UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.INCREASE_DAMAGE) * 1.5D;
+            final int amplifier = UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.INCREASE_DAMAGE);
+
+            damage += amplifier * 1.5D;
         }
 
         if (UtilEntity.hasPotionEffect(damagee, PotionEffectType.WEAKNESS)) {
-            damage += UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.WEAKNESS) * 1.5D;
+            final int amplifier = UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.WEAKNESS);
+
+            damage += amplifier * 1.5D;
         }
 
         if (UtilEntity.hasPotionEffect(damagee, PotionEffectType.DAMAGE_RESISTANCE)) {
-            damage -= UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.DAMAGE_RESISTANCE) * 1.5D;
+            final int amplifier = UtilEntity.getPotionEffectAmplifier(damager, PotionEffectType.DAMAGE_RESISTANCE);
+
+            damage -= amplifier * 1.5D;
         }
 
         event.setDamage(damage);

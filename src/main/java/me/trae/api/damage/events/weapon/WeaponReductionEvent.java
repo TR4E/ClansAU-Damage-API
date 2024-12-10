@@ -11,16 +11,16 @@ public class WeaponReductionEvent extends CustomCancellableEvent implements IWea
 
     private final WeaponSlotType slotType;
     private final WeaponMaterialType materialType;
-    private final LivingEntity entity;
     private final ItemStack itemStack;
+    private final LivingEntity entity;
 
     private double reduction;
 
-    public WeaponReductionEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final LivingEntity entity, final ItemStack itemStack, final double reduction) {
+    public WeaponReductionEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final ItemStack itemStack, final LivingEntity entity, final double reduction) {
         this.slotType = slotType;
         this.materialType = materialType;
-        this.entity = entity;
         this.itemStack = itemStack;
+        this.entity = entity;
         this.reduction = reduction;
     }
 

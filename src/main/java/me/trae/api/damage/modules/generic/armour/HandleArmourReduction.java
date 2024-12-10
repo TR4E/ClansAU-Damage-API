@@ -49,14 +49,9 @@ public class HandleArmourReduction extends SpigotListener<Core, DamageManager> {
                 continue;
             }
 
-            final double defaultReduction = this.getValueByMaterial(itemStack.getType());
-            if (defaultReduction == 0.0D) {
-                continue;
-            }
-
-            final ArmourReductionEvent armourReductionEvent = new ArmourReductionEvent(slotType, materialType, damagee, defaultReduction);
+            final ArmourReductionEvent armourReductionEvent = new ArmourReductionEvent(slotType, materialType, itemStack, damagee, this.getValueByMaterial(itemStack.getType()));
             UtilServer.callEvent(armourReductionEvent);
-            if (armourReductionEvent.isCancelled()) {
+            if (armourReductionEvent.isCancelled() || armourReductionEvent.getReduction() == 0.0D) {
                 continue;
             }
 
@@ -69,46 +64,38 @@ public class HandleArmourReduction extends SpigotListener<Core, DamageManager> {
     private double getValueByMaterial(final Material material) {
         switch (material) {
             case DIAMOND_HELMET:
-            case LEATHER_LEGGINGS:
-                return 10.0D;
-
-            case IRON_HELMET:
-            case CHAINMAIL_HELMET:
-            case GOLD_HELMET:
-            case IRON_BOOTS:
-            case GOLD_BOOTS:
-                return 8.0D;
-
-            case LEATHER_HELMET:
-            case LEATHER_BOOTS:
-                return 6.0D;
+            case DIAMOND_BOOTS:
+            case GOLD_LEGGINGS:
+            case LEATHER_CHESTPLATE:
+                return 3.0;
 
             case DIAMOND_CHESTPLATE:
-            case IRON_CHESTPLATE:
-                return 24.0D;
-
-            case GOLD_CHESTPLATE:
-                return 22.0D;
-
-            case CHAINMAIL_CHESTPLATE:
-            case IRON_LEGGINGS:
-            case GOLD_LEGGINGS:
-                return 20.0D;
-
-            case LEATHER_CHESTPLATE:
-                return 14.0D;
+                return 8.0;
 
             case DIAMOND_LEGGINGS:
-                return 18.0D;
+            case IRON_CHESTPLATE:
+                return 6.0;
+
+            case IRON_HELMET:
+            case IRON_BOOTS:
+            case GOLD_HELMET:
+            case CHAINMAIL_HELMET:
+            case LEATHER_LEGGINGS:
+                return 2.0;
+
+            case IRON_LEGGINGS:
+            case GOLD_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+                return 5.0;
+
+            case GOLD_BOOTS:
+            case LEATHER_HELMET:
+            case LEATHER_BOOTS:
+            case CHAINMAIL_BOOTS:
+                return 1.0;
 
             case CHAINMAIL_LEGGINGS:
-                return 16.0D;
-
-            case DIAMOND_BOOTS:
-                return 12.0D;
-
-            case CHAINMAIL_BOOTS:
-                return 1.8D;
+                return 4.0;
         }
 
         return 0.0D;

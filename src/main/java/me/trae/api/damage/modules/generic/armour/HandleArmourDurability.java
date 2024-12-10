@@ -49,9 +49,9 @@ public class HandleArmourDurability extends SpigotListener<Core, DamageManager> 
                 continue;
             }
 
-            final ArmourDurabilityEvent armourDurabilityEvent = new ArmourDurabilityEvent(slotType, materialType, damagee, 1);
+            final ArmourDurabilityEvent armourDurabilityEvent = new ArmourDurabilityEvent(slotType, materialType, itemStack, damagee, 1);
             UtilServer.callEvent(armourDurabilityEvent);
-            if (armourDurabilityEvent.isCancelled()) {
+            if (armourDurabilityEvent.isCancelled() || armourDurabilityEvent.getDurability() == 0) {
                 if (damagee instanceof Player) {
                     event.getDamageeByClass(Player.class).updateInventory();
                 }

@@ -11,16 +11,16 @@ public class WeaponDurabilityEvent extends CustomCancellableEvent implements IWe
 
     private final WeaponSlotType slotType;
     private final WeaponMaterialType materialType;
-    private final LivingEntity entity;
     private final ItemStack itemStack;
+    private final LivingEntity entity;
 
     private int durability;
 
-    public WeaponDurabilityEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final LivingEntity entity, final ItemStack itemStack, final int durability) {
+    public WeaponDurabilityEvent(final WeaponSlotType slotType, final WeaponMaterialType materialType, final ItemStack itemStack, final LivingEntity entity, final int durability) {
         this.slotType = slotType;
         this.materialType = materialType;
-        this.entity = entity;
         this.itemStack = itemStack;
+        this.entity = entity;
         this.durability = durability;
     }
 

@@ -52,15 +52,9 @@ public class HandleWeaponReduction extends SpigotListener<Core, DamageManager> {
             return;
         }
 
-        final double defaultReduction = this.getValueByItemStack(itemStack);
-
-        final WeaponReductionEvent weaponReductionEvent = new WeaponReductionEvent(slotType, materialType, damager, itemStack, defaultReduction);
+        final WeaponReductionEvent weaponReductionEvent = new WeaponReductionEvent(slotType, materialType, itemStack, damager, this.getValueByItemStack(itemStack));
         UtilServer.callEvent(weaponReductionEvent);
-        if (weaponReductionEvent.isCancelled()) {
-            return;
-        }
-
-        if (weaponReductionEvent.getReduction() == 0.0D) {
+        if (weaponReductionEvent.isCancelled() || weaponReductionEvent.getReduction() == 0.0D) {
             return;
         }
 
