@@ -8,6 +8,7 @@ import me.trae.api.combat.npc.CombatNPC;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
+import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.weapon.WeaponManager;
@@ -27,6 +28,9 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     private final Map<UUID, Combat> COMBAT_MAP = new HashMap<>();
     private final Map<UUID, CombatNPC> COMBAT_NPC_MAP = new HashMap<>();
 
+    @ConfigInject(type = Long.class, path = "Combat-NPC-Duration", defaultValue = "600_000")
+    public long combatNpcDuration;
+
     public CombatManager(final Core instance) {
         super(instance);
     }
@@ -34,7 +38,6 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     @Override
     public void registerModules() {
         addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
-        addModule(new HandleCombatLogUpdater(this));
         addModule(new HandleCombatOnPlayerDamage(this));
         addModule(new HandleCombatOnPlayerDeath(this));
         addModule(new HandleCombatUpdater(this));
@@ -124,12 +127,12 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public void addCombatNpc(final CombatNPC combatNPC) {
-        this.getCombatNpcMap().put(combatNPC.getUUID(), combatNPC);
+        this.getCombatNpcMap().put(combatNPC.getPlayer().getUniqueId(), combatNPC);
     }
 
     @Override
     public void removeCombatNpc(final CombatNPC combatNPC) {
-        this.getCombatNpcMap().remove(combatNPC.getUUID());
+        this.getCombatNpcMap().remove(combatNPC.getPlayer().getUniqueId());
     }
 
     @Override

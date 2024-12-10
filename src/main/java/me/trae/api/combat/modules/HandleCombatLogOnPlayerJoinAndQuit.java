@@ -4,19 +4,13 @@ import me.trae.api.combat.CombatManager;
 import me.trae.api.combat.npc.CombatNPC;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import me.trae.core.utility.UtilMessage;
+import me.trae.core.utility.UtilServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, CombatManager> {
 
@@ -25,34 +19,12 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
     }
 
     private void createCombatNPC(final Player player) {
-        final List<ItemStack> contents = new ArrayList<>();
-
-        contents.addAll(Arrays.asList(player.getInventory().getArmorContents()));
-        contents.addAll(Arrays.asList(player.getInventory().getContents()));
-
-        contents.removeIf(itemStack -> itemStack == null || itemStack.getType() == Material.AIR);
-
-        final CombatNPC combatNPC = new CombatNPC(player) {
+        final CombatNPC combatNPC = new CombatNPC(player, this.getManager().combatNpcDuration) {
             @Override
-            public void remove() {
-                super.remove();
+            public void onDestroy() {
+                super.onDestroy();
                 getManager().removeCombatNpc(this);
-                getManager().getCombatMap().remove(this.getUUID());
-            }
-
-            @Override
-            public Location getLocation() {
-                return player.getLocation().clone();
-            }
-
-            @Override
-            public OfflinePlayer getPlayer() {
-                return player;
-            }
-
-            @Override
-            public List<ItemStack> getContents() {
-                return contents;
+                getManager().getCombatMap().remove(this.getPlayer().getUniqueId());
             }
         };
 
@@ -72,7 +44,7 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
         this.createCombatNPC(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
 
@@ -81,6 +53,8 @@ public class HandleCombatLogOnPlayerJoinAndQuit extends SpigotListener<Core, Com
             return;
         }
 
-        npc.remove();
+        npc.destroy();
+
+        UtilMessage.simpleMessage(player, "Combat Log", "You saved yourself!");
     }
 }
