@@ -7,8 +7,10 @@ import me.trae.core.npc.models.ExpirableNPC;
 import me.trae.core.player.events.PlayerDisplayNameEvent;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilMessage;
+import me.trae.core.utility.UtilParticle;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.utility.enums.ClickType;
+import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -55,6 +57,12 @@ public abstract class CombatNPC extends CustomNPC implements ClickableNPC, Expir
     @Override
     public void updateEntity(final Entity entity) {
         UtilJava.cast(Sheep.class, entity).setColor(DyeColor.CYAN);
+    }
+
+    @Override
+    public void onDestroy() {
+        UtilParticle.playParticle(EnumParticle.EXPLOSION_NORMAL, this.getLocation(), 1, 50);
+        UtilParticle.playParticle(EnumParticle.SMOKE_LARGE, this.getLocation(), 1, 70);
     }
 
     @Override
