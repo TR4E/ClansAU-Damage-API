@@ -29,11 +29,15 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
             return;
         }
 
-        if (!(this.isValid(event))) {
+        if (!(this.isPreValid(event))) {
             return;
         }
 
         event.setCancelled(true);
+
+        if (!(this.isPostValid(event))) {
+            return;
+        }
 
         final CustomPreDamageEvent customPreDamageEvent = this.getCustomDamageEvent(event);
 
@@ -82,14 +86,10 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         return new CustomPreDamageEvent(entityDamageEvent);
     }
 
-    private boolean isValid(final EntityDamageEvent entityDamageEvent) {
+    private boolean isPreValid(final EntityDamageEvent entityDamageEvent) {
         final Entity entity = entityDamageEvent.getEntity();
 
         if (entity instanceof FishHook) {
-            return false;
-        }
-
-        if (entity instanceof Fireball) {
             return false;
         }
 
@@ -101,11 +101,17 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
             if (damager instanceof FishHook) {
                 return false;
             }
-
-            if (damager instanceof Fireball) {
-                return false;
-            }
         }
+
+        return true;
+    }
+
+    private boolean isPostValid(final EntityDamageEvent entityDamageEvent) {
+        final Entity entity = entityDamageEvent.getEntity();
+
+//        if (entity instanceof Fireball) {
+//            return false;
+//        }
 
         return true;
     }

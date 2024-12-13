@@ -13,12 +13,18 @@ import java.util.Arrays;
 
 public class UtilDamage {
 
-    public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage, final String reasonName, final long reasonDuration) {
+    public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage, final long delay, final String reasonName, final long reasonDuration) {
         final CustomPreDamageEvent event = new CustomPreDamageEvent(damagee, damager, cause, damage);
+
+        event.setDelay(delay);
 
         event.setReason(reasonName, reasonDuration);
 
         UtilServer.callEvent(event);
+    }
+
+    public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage, final String reasonName, final long reasonDuration) {
+        damage(damagee, damager, cause, damage, 0L, reasonName, reasonDuration);
     }
 
     public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage) {
