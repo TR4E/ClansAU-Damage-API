@@ -38,7 +38,7 @@ public class HandleCustomDamageDelay extends SpigotListener<Core, DamageManager>
     @ConfigInject(type = Long.class, path = "Fire-Delay", defaultValue = "600")
     private long fireDelay;
 
-    @ConfigInject(type = Long.class, path = "Fire-Tick-Delay", defaultValue = "1_000")
+    @ConfigInject(type = Long.class, path = "Fire-Tick-Delay", defaultValue = "800")
     private long fireTickDelay;
 
     @ConfigInject(type = Long.class, path = "Lava-Delay", defaultValue = "400")

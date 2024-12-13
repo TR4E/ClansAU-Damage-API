@@ -37,6 +37,7 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
         addModule(new HandlePlaySoundOnArrowHitEntity(this));
 
         // Generic Modules
+        addModule(new HandleCustomDamageArrowFireTicks(this));
         addModule(new HandleCustomDamageDelay(this));
         addModule(new HandleCustomDamageDisplayOnPlayerLevel(this));
         addModule(new HandleCustomDamageKnockback(this));
