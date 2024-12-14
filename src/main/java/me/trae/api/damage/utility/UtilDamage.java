@@ -18,13 +18,19 @@ public class UtilDamage {
 
         event.setDelay(delay);
 
-        event.setReason(reasonName, reasonDuration);
+        if (reasonName != null && reasonDuration > 0) {
+            event.setReason(reasonName, reasonDuration);
+        }
 
         UtilServer.callEvent(event);
     }
 
     public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage, final String reasonName, final long reasonDuration) {
         damage(damagee, damager, cause, damage, 0L, reasonName, reasonDuration);
+    }
+
+    public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage, final long delay) {
+        damage(damagee, damager, cause, damage, delay, null, 0L);
     }
 
     public static void damage(final Entity damagee, final Entity damager, final EntityDamageEvent.DamageCause cause, final double damage) {
