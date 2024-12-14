@@ -2,6 +2,7 @@ package me.trae.api.damage.modules.generic.armour;
 
 import me.trae.api.damage.DamageManager;
 import me.trae.api.damage.events.armour.ArmourReductionEvent;
+import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.damage.events.damage.CustomPreDamageEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
@@ -21,7 +22,7 @@ public class HandleArmourReduction extends SpigotListener<Core, DamageManager> {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onCustomDamage(final CustomPreDamageEvent event) {
+    public void onCustomPostDamage(final CustomPostDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }
