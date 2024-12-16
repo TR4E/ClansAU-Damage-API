@@ -88,7 +88,7 @@ public interface IDamageEvent {
     void setReason(final String name, final long duration);
 
     default void setLightReason(final DamageReason reason) {
-        final DamageReason damageReason = UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).getLastReasonByDamagee(this.getDamagee(), this.getDamager());
+        final DamageReason damageReason = UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getLastReasonByDamagee(this.getDamagee(), this.getDamager());
         if (damageReason != null && !(damageReason.getName().contains(reason.getName())) && !(damageReason.hasExpired())) {
             return;
         }

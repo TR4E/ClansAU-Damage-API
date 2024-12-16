@@ -14,7 +14,7 @@ public class CustomDeathEvent extends CustomEvent implements ICustomDeathEvent {
 
     public CustomDeathEvent(final CustomPostDamageEvent damageEvent) {
         this.damageEvent = damageEvent;
-        this.assists = UtilPlugin.getInstance(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee()).size();
+        this.assists = UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee()).size();
     }
 
     @Override
