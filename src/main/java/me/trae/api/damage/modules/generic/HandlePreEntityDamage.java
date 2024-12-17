@@ -1,6 +1,7 @@
 package me.trae.api.damage.modules.generic;
 
 import me.trae.api.damage.DamageManager;
+import me.trae.api.damage.events.PlayerCaughtEntityEvent;
 import me.trae.api.damage.events.damage.CustomDamageEvent;
 import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.damage.events.damage.CustomPreDamageEvent;
@@ -26,6 +27,10 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(final EntityDamageEvent event) {
         if (event.isCancelled()) {
+            return;
+        }
+
+        if (this.checkFishHook(event)) {
             return;
         }
 
@@ -89,18 +94,14 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
     private boolean isPreValid(final EntityDamageEvent entityDamageEvent) {
         final Entity entity = entityDamageEvent.getEntity();
 
-        if (entity instanceof FishHook) {
-            return false;
-        }
+//        if (entity instanceof FishHook) {
+//            return false;
+//        }
 
         if (entityDamageEvent instanceof EntityDamageByEntityEvent) {
             final EntityDamageByEntityEvent entityDamageByEntityEvent = UtilJava.cast(EntityDamageByEntityEvent.class, entityDamageEvent);
 
             final Entity damager = entityDamageByEntityEvent.getDamager();
-
-            if (damager instanceof FishHook) {
-                return false;
-            }
         }
 
         return true;
@@ -131,5 +132,38 @@ public class HandlePreEntityDamage extends SpigotListener<Core, DamageManager> {
         }
 
         return false;
+    }
+
+    private boolean checkFishHook(final EntityDamageEvent event) {
+        if (!(event instanceof EntityDamageByEntityEvent)) {
+            return false;
+        }
+
+        final EntityDamageByEntityEvent entityDamageByEntityEvent = UtilJava.cast(EntityDamageByEntityEvent.class, event);
+
+        if (!(entityDamageByEntityEvent.getDamager() instanceof FishHook)) {
+            return false;
+        }
+
+        if (!(entityDamageByEntityEvent.getEntity() instanceof LivingEntity)) {
+            return false;
+        }
+
+        final FishHook fishHook = UtilJava.cast(FishHook.class, entityDamageByEntityEvent.getDamager());
+        final LivingEntity damagee = UtilJava.cast(LivingEntity.class, entityDamageByEntityEvent.getEntity());
+
+        if (!(fishHook.getShooter() instanceof Player)) {
+            return false;
+        }
+
+        final Player damager = UtilJava.cast(Player.class, fishHook.getShooter());
+
+        final PlayerCaughtEntityEvent playerCaughtEntityEvent = new PlayerCaughtEntityEvent(damager, damagee);
+        UtilServer.callEvent(playerCaughtEntityEvent);
+        if (playerCaughtEntityEvent.isCancelled()) {
+            event.setCancelled(true);
+        }
+
+        return true;
     }
 }
