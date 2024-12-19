@@ -1,14 +1,17 @@
 package me.trae.api.death.modules;
 
 import me.trae.api.damage.DamageManager;
+import me.trae.api.damage.data.DamageReason;
 import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
+import me.trae.core.utility.UtilColor;
 import me.trae.core.utility.UtilMessage;
 import me.trae.core.utility.UtilString;
 import me.trae.core.utility.UtilTime;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,8 +59,11 @@ public class HandleDeathSummaryMessage extends SpigotListener<Core, DeathManager
     }
 
     private String getReason(final CustomPostDamageEvent data) {
-        if (data.hasReason()) {
-            return data.getReason().getName();
+        if (data.hasDamager()) {
+            final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getLastReasonByDamagee(data.getDamagee(), data.getDamager());
+            if (damageReason != null && !(damageReason.hasExpired())) {
+                return UtilColor.applyIfMissing(ChatColor.valueOf(this.getManager().customReasonChatColor), damageReason.getName());
+            }
         }
 
         return data.getReasonString();

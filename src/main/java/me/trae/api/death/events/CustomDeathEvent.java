@@ -5,7 +5,9 @@ import me.trae.api.damage.events.damage.CustomPostDamageEvent;
 import me.trae.api.death.events.interfaces.ICustomDeathEvent;
 import me.trae.core.Core;
 import me.trae.core.event.CustomEvent;
+import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
+import org.bukkit.entity.Player;
 
 public class CustomDeathEvent extends CustomEvent implements ICustomDeathEvent {
 
@@ -14,7 +16,15 @@ public class CustomDeathEvent extends CustomEvent implements ICustomDeathEvent {
 
     public CustomDeathEvent(final CustomPostDamageEvent damageEvent) {
         this.damageEvent = damageEvent;
-        this.assists = UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee()).size();
+        this.assists = UtilJava.get(UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee()), list -> {
+            list.removeIf(event -> !(event.getDamager() instanceof Player));
+
+            if (damageEvent.hasDamager()) {
+                list.removeIf(event -> event.hasDamager() && event.getDamager().equals(damageEvent.getDamager()));
+            }
+
+            return list.size();
+        });
     }
 
     @Override

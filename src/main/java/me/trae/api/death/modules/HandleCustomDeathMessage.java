@@ -28,9 +28,6 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
     @ConfigInject(type = Boolean.class, path = "Players-Only", defaultValue = "true")
     private boolean playersOnly;
 
-    @ConfigInject(type = String.class, path = "Custom-Reason-ChatColor", defaultValue = "GREEN")
-    private String customReasonChatColor;
-
     public HandleCustomDeathMessage(final DeathManager manager) {
         super(manager);
     }
@@ -88,7 +85,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
         final DamageReason damageReason = damageManager.getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {
-            reason = UtilColor.applyIfMissing(ChatColor.valueOf(this.customReasonChatColor), damageReason.getDisplayName());
+            reason = UtilColor.applyIfMissing(ChatColor.valueOf(this.getManager().customReasonChatColor), damageReason.getDisplayName());
         }
 
         if ((damageReason == null || damageReason.hasExpired()) && !(reason.contains("Air"))) {
