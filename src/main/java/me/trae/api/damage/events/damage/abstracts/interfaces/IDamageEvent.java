@@ -5,15 +5,15 @@ import me.trae.api.damage.data.DamageReason;
 import me.trae.core.Core;
 import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
+import me.trae.core.utility.components.time.GetSystemTimeComponent;
+import me.trae.core.utility.components.time.SetSystemTimeComponent;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public interface IDamageEvent {
-
-    long getSystemTime();
+public interface IDamageEvent extends GetSystemTimeComponent, SetSystemTimeComponent {
 
     Entity getDamagee();
 

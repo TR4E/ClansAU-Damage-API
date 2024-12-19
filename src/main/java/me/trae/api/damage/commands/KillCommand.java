@@ -21,7 +21,7 @@ public class KillCommand extends Command<Core, DamageManager> implements PlayerC
     @Override
     public void execute(final Player player, final Client client, final Gamer gamer, final String[] args) {
         if (args.length == 0) {
-            UtilDamage.damage(player, EntityDamageEvent.DamageCause.SUICIDE, Integer.MAX_VALUE);
+            UtilDamage.damage(player, EntityDamageEvent.DamageCause.SUICIDE, player.getHealth());
             return;
         }
 
@@ -31,7 +31,7 @@ public class KillCommand extends Command<Core, DamageManager> implements PlayerC
                 return;
             }
 
-            UtilDamage.damage(targetPlayer, EntityDamageEvent.DamageCause.SUICIDE, Integer.MAX_VALUE);
+            UtilDamage.damage(targetPlayer, EntityDamageEvent.DamageCause.SUICIDE, targetPlayer.getHealth());
         }
     }
 }

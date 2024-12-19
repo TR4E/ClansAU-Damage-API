@@ -20,12 +20,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class DamageEvent extends CustomCancellableEvent implements IDamageEvent {
 
-    private final long systemTime;
-
     private final Entity damagee, damager;
     private final Projectile projectile;
     private final EntityDamageEvent.DamageCause cause;
     private final String causeString, reasonString;
+
+    private long systemTime;
 
     private ItemStack itemStack;
 
@@ -95,11 +95,6 @@ public class DamageEvent extends CustomCancellableEvent implements IDamageEvent 
     }
 
     @Override
-    public long getSystemTime() {
-        return this.systemTime;
-    }
-
-    @Override
     public Entity getDamagee() {
         return this.damagee;
     }
@@ -117,6 +112,16 @@ public class DamageEvent extends CustomCancellableEvent implements IDamageEvent 
     @Override
     public EntityDamageEvent.DamageCause getCause() {
         return this.cause;
+    }
+
+    @Override
+    public long getSystemTime() {
+        return this.systemTime;
+    }
+
+    @Override
+    public void setSystemTime(final long systemTime) {
+        this.systemTime = systemTime;
     }
 
     @Override

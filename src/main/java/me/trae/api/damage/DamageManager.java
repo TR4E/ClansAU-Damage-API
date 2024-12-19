@@ -15,9 +15,11 @@ import me.trae.api.damage.modules.system.HandleDamageReasonCheckForNewDamage;
 import me.trae.core.Core;
 import me.trae.core.framework.SpigotManager;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DamageManager extends SpigotManager<Core> implements IDamageManager {
 
@@ -66,19 +68,44 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
     @Override
     public void addDamageData(final CustomPostDamageEvent data) {
-        if (!(data.getDamager() instanceof Player)) {
-            return;
+        final CustomPostDamageEvent newData = new CustomPostDamageEvent(data);
+
+        if (!(this.getDamageDataMap().containsKey(newData.getDamagee().getUniqueId()))) {
+            this.getDamageDataMap().put(newData.getDamagee().getUniqueId(), new ArrayList<>());
         }
 
-        if (!(this.getDamageDataMap().containsKey(data.getDamagee().getUniqueId()))) {
-            this.getDamageDataMap().put(data.getDamagee().getUniqueId(), new ArrayList<>());
+        final List<CustomPostDamageEvent> list = this.getDamageDataMap().get(newData.getDamagee().getUniqueId());
+
+        int type = 0;
+
+        for (final CustomPostDamageEvent event : list) {
+            if (event.hasDamager() && newData.hasDamager() && event.getDamager().equals(newData.getDamager())) {
+                type = 1;
+                newData.setDamage(event.getDamage() + newData.getDamage());
+                break;
+            }
+
+            if (!(event.hasDamager()) && !(newData.hasDamager()) && event.getCause() == newData.getCause()) {
+                type = 2;
+                newData.setDamage(event.getDamage() + newData.getDamage());
+                break;
+            }
         }
 
-        final List<CustomPostDamageEvent> list = this.getDamageDataMap().get(data.getDamagee().getUniqueId());
+        if (type == 1 && newData.hasDamager()) {
+            list.removeIf(event -> event.hasDamager() && event.getDamager().equals(newData.getDamager()));
+        }
 
-        list.removeIf(event -> event.getDamager().equals(data.getDamager()));
+        if (type == 2 && !(newData.hasDamager())) {
+            list.removeIf(event -> event.getCause() == newData.getCause());
+        }
 
-        list.add(data);
+        list.add(newData);
+    }
+
+    @Override
+    public void removeDamageData(final LivingEntity entity) {
+        this.getDamageDataMap().remove(entity.getUniqueId());
     }
 
     @Override
@@ -88,7 +115,7 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
 
     @Override
     public CustomPostDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
-        final List<CustomPostDamageEvent> list = this.getListOfDamageDataByDamagee(damagee);
+        final List<CustomPostDamageEvent> list = this.getListOfDamageDataByDamagee(damagee).stream().filter(event -> event.getDamager() instanceof Player).collect(Collectors.toList());
         if (!(list.isEmpty())) {
             return list.remove(list.size() - 1);
         }
