@@ -9,6 +9,8 @@ import me.trae.core.utility.UtilJava;
 import me.trae.core.utility.UtilPlugin;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class CustomDeathEvent extends CustomEvent implements ICustomDeathEvent {
 
     private final CustomPostDamageEvent damageEvent;
@@ -16,7 +18,7 @@ public class CustomDeathEvent extends CustomEvent implements ICustomDeathEvent {
 
     public CustomDeathEvent(final CustomPostDamageEvent damageEvent) {
         this.damageEvent = damageEvent;
-        this.assists = UtilJava.get(UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee()), list -> {
+        this.assists = UtilJava.get(new ArrayList<>(UtilPlugin.getInstanceByClass(Core.class).getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(damageEvent.getDamagee())), list -> {
             list.removeIf(event -> !(event.getDamager() instanceof Player));
 
             if (damageEvent.hasDamager()) {

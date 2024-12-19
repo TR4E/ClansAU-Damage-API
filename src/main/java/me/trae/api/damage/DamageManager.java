@@ -117,7 +117,7 @@ public class DamageManager extends SpigotManager<Core> implements IDamageManager
     public CustomPostDamageEvent getLastDamageDataByDamagee(final Entity damagee) {
         final List<CustomPostDamageEvent> list = this.getListOfDamageDataByDamagee(damagee).stream().filter(event -> event.getDamager() instanceof Player).collect(Collectors.toList());
         if (!(list.isEmpty())) {
-            return list.remove(list.size() - 1);
+            return list.get(list.size() - 1);
         }
 
         return null;
