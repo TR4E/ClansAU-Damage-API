@@ -36,7 +36,7 @@ public class HandleCombatOnPlayerDamage extends SpigotListener<Core, CombatManag
             return;
         }
 
-        final ClientManager clientManager = this.getInstanceByClass().getManagerByClass(ClientManager.class);
+        final ClientManager clientManager = this.getInstance().getManagerByClass(ClientManager.class);
 
         if (clientManager.getClientByPlayer(damagee).isAdministrating()) {
             return;

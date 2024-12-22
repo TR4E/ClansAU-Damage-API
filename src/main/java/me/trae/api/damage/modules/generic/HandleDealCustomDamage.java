@@ -90,7 +90,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
 
         event.getDamagee().playEffect(EntityEffect.DEATH);
 
-        CustomPostDamageEvent data = this.getInstanceByClass().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
+        CustomPostDamageEvent data = this.getInstance().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
         if (data == null) {
             data = event;
         }

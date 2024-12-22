@@ -90,7 +90,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public boolean isSafeByPlayer(final Player player) {
-        if (this.getInstanceByClass().isServerStopping()) {
+        if (this.getInstance().isServerStopping()) {
             return true;
         }
 
@@ -98,11 +98,11 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
             return true;
         }
 
-        if (this.getInstanceByClass().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
+        if (this.getInstance().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
             return true;
         }
 
-        final PlayerCountdown playerCountdown = this.getInstanceByClass().getManagerByClass(CountdownManager.class).getCountdownByPlayer(player);
+        final PlayerCountdown playerCountdown = this.getInstance().getManagerByClass(CountdownManager.class).getCountdownByPlayer(player);
         if (playerCountdown instanceof LogCountdown && playerCountdown.hasExpired()) {
             return true;
         }
@@ -111,7 +111,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
             return false;
         }
 
-        final WeaponManager weaponManager = this.getInstanceByClass().getManagerByClass(WeaponManager.class);
+        final WeaponManager weaponManager = this.getInstance().getManagerByClass(WeaponManager.class);
 
         final Predicate<ItemStack> predicate = (itemStack -> {
             if (itemStack == null || itemStack.getType() == Material.AIR) {
