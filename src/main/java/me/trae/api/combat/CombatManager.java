@@ -1,14 +1,21 @@
 package me.trae.api.combat;
 
+import me.trae.api.combat.commands.LogCommand;
 import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
-import me.trae.api.combat.modules.*;
+import me.trae.api.combat.log.LogCountdown;
+import me.trae.api.combat.modules.HandleCombatLogOnPlayerJoinAndQuit;
+import me.trae.api.combat.modules.HandleCombatOnPlayerDamage;
+import me.trae.api.combat.modules.HandleCombatOnPlayerDeath;
+import me.trae.api.combat.modules.HandleCombatUpdater;
 import me.trae.api.combat.npc.CombatNPC;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.client.ClientManager;
 import me.trae.core.config.annotations.ConfigInject;
+import me.trae.core.countdown.CountdownManager;
+import me.trae.core.countdown.types.PlayerCountdown;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.utility.UtilServer;
 import me.trae.core.weapon.WeaponManager;
@@ -37,6 +44,10 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
 
     @Override
     public void registerModules() {
+        // Commands
+        addModule(new LogCommand(this));
+
+        // Modules
         addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
         addModule(new HandleCombatOnPlayerDamage(this));
         addModule(new HandleCombatOnPlayerDeath(this));
@@ -88,6 +99,11 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
         }
 
         if (this.getInstance().getManagerByClass(ClientManager.class).getClientByPlayer(player).isAdministrating()) {
+            return true;
+        }
+
+        final PlayerCountdown playerCountdown = this.getInstance().getManagerByClass(CountdownManager.class).getCountdownByPlayer(player);
+        if (playerCountdown instanceof LogCountdown && playerCountdown.hasExpired()) {
             return true;
         }
 
