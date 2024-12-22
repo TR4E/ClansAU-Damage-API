@@ -16,6 +16,6 @@ public class RemoveDamageDataOnEntityDeath extends SpigotListener<Core, DeathMan
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCustomDeath(final CustomDeathEvent event) {
-        this.getInstance().getManagerByClass(DamageManager.class).removeDamageData(event.getEntity());
+        this.getInstanceByClass().getManagerByClass(DamageManager.class).removeDamageData(event.getEntity());
     }
 }

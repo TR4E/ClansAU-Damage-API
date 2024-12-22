@@ -29,7 +29,7 @@ public class LogCommand extends Command<Core, CombatManager> implements PlayerCo
 
     @Override
     public void execute(final Player player, final Client client, final Gamer gamer, final String[] args) {
-        final CountdownManager countdownManager = this.getInstance().getManagerByClass(CountdownManager.class);
+        final CountdownManager countdownManager = this.getInstanceByClass().getManagerByClass(CountdownManager.class);
 
         if (countdownManager.getCountdownByPlayer(player) instanceof LogCountdown) {
             UtilMessage.message(player, "Log", "You are already attempting to Safe Log!");

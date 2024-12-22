@@ -35,7 +35,7 @@ public class HandleDeathSummaryMessage extends SpigotListener<Core, DeathManager
 
         final Player player = event.getEntityByClass(Player.class);
 
-        final List<CustomPostDamageEvent> list = this.getInstance().getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(player);
+        final List<CustomPostDamageEvent> list = this.getInstanceByClass().getManagerByClass(DamageManager.class).getListOfDamageDataByDamagee(player);
         if (list.isEmpty()) {
             return;
         }
@@ -60,7 +60,7 @@ public class HandleDeathSummaryMessage extends SpigotListener<Core, DeathManager
 
     private String getReason(final CustomPostDamageEvent data) {
         if (data.hasDamager()) {
-            final DamageReason damageReason = this.getInstance().getManagerByClass(DamageManager.class).getLastReasonByDamagee(data.getDamagee(), data.getDamager());
+            final DamageReason damageReason = this.getInstanceByClass().getManagerByClass(DamageManager.class).getLastReasonByDamagee(data.getDamagee(), data.getDamager());
             if (damageReason != null && !(damageReason.hasExpired())) {
                 return UtilColor.applyIfMissing(ChatColor.valueOf(this.getManager().customReasonChatColor), damageReason.getName());
             }

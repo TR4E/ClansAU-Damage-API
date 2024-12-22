@@ -81,7 +81,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
         String reason = damageEvent.getReasonString();
 
-        final DamageManager damageManager = this.getInstance().getManagerByClass(DamageManager.class);
+        final DamageManager damageManager = this.getInstanceByClass().getManagerByClass(DamageManager.class);
 
         final DamageReason damageReason = damageManager.getLastReasonByDamagee(damageEvent.getDamagee(), damageEvent.getDamager());
         if (damageReason != null && !(damageReason.hasExpired())) {

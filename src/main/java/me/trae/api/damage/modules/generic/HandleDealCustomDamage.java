@@ -16,7 +16,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerFishEvent;
 
 public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> {
 
@@ -91,7 +90,7 @@ public class HandleDealCustomDamage extends SpigotListener<Core, DamageManager> 
 
         event.getDamagee().playEffect(EntityEffect.DEATH);
 
-        CustomPostDamageEvent data = this.getInstance().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
+        CustomPostDamageEvent data = this.getInstanceByClass().getManagerByClass(DamageManager.class).getLastDamageDataByDamagee(event.getDamagee());
         if (data == null) {
             data = event;
         }
