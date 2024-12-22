@@ -13,13 +13,13 @@ import me.trae.core.gamer.Gamer;
 import me.trae.core.utility.UtilMessage;
 import org.bukkit.entity.Player;
 
-public class LogCommand extends Command<Core, CombatManager> implements PlayerCommandType {
+public class SafeLogCommand extends Command<Core, CombatManager> implements PlayerCommandType {
 
     @ConfigInject(type = Long.class, path = "Duration", defaultValue = "10_000")
     private long duration;
 
-    public LogCommand(final CombatManager manager) {
-        super(manager, "log", new String[]{"combatlog", "safelog"}, Rank.DEFAULT);
+    public SafeLogCommand(final CombatManager manager) {
+        super(manager, "safelog", new String[]{"combatlog", "log"}, Rank.DEFAULT);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LogCommand extends Command<Core, CombatManager> implements PlayerCo
         final CountdownManager countdownManager = this.getInstance().getManagerByClass(CountdownManager.class);
 
         if (countdownManager.getCountdownByPlayer(player) instanceof LogCountdown) {
-            UtilMessage.message(player, "Log", "You are already attempting to Safe Log!");
+            UtilMessage.message(player, "Safe Log", "You are already attempting to Safe Log!");
             return;
         }
 

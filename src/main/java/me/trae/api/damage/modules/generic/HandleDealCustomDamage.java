@@ -11,9 +11,10 @@ import me.trae.core.utility.UtilServer;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.EntityEffect;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.*;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 

@@ -1,6 +1,6 @@
 package me.trae.api.combat;
 
-import me.trae.api.combat.commands.LogCommand;
+import me.trae.api.combat.commands.SafeLogCommand;
 import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
@@ -45,7 +45,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
     @Override
     public void registerModules() {
         // Commands
-        addModule(new LogCommand(this));
+        addModule(new SafeLogCommand(this));
 
         // Modules
         addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
