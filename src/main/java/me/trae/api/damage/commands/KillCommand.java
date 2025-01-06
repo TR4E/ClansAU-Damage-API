@@ -1,6 +1,7 @@
 package me.trae.api.damage.commands;
 
 import me.trae.api.damage.DamageManager;
+import me.trae.api.damage.events.PlayerSuicideEvent;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
 import me.trae.core.client.Client;
@@ -9,6 +10,7 @@ import me.trae.core.command.types.Command;
 import me.trae.core.command.types.models.PlayerCommandType;
 import me.trae.core.gamer.Gamer;
 import me.trae.core.utility.UtilPlayer;
+import me.trae.core.utility.UtilServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -21,6 +23,12 @@ public class KillCommand extends Command<Core, DamageManager> implements PlayerC
     @Override
     public void execute(final Player player, final Client client, final Gamer gamer, final String[] args) {
         if (args.length == 0) {
+            final PlayerSuicideEvent event = new PlayerSuicideEvent(player);
+            UtilServer.callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+
             UtilDamage.damage(player, EntityDamageEvent.DamageCause.SUICIDE, player.getHealth());
             return;
         }
