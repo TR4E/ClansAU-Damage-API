@@ -1,5 +1,6 @@
 package me.trae.api.combat.npc;
 
+import me.trae.api.combat.events.PlayerClickCombatNpcEvent;
 import me.trae.api.combat.npc.interfaces.ICombatNPC;
 import me.trae.core.npc.CustomNPC;
 import me.trae.core.npc.models.ClickableNPC;
@@ -68,6 +69,12 @@ public abstract class CombatNPC extends CustomNPC implements ClickableNPC, Expir
     @Override
     public void onClick(final Player player, final ClickType clickType) {
         if (clickType != ClickType.RIGHT) {
+            return;
+        }
+
+        final PlayerClickCombatNpcEvent event = new PlayerClickCombatNpcEvent(player, this.getPlayer());
+        UtilServer.callEvent(event);
+        if (event.isCancelled()) {
             return;
         }
 
