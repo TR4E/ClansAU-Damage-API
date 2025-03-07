@@ -9,10 +9,7 @@ import me.trae.api.death.events.CustomDeathMessageEvent;
 import me.trae.core.Core;
 import me.trae.core.config.annotations.ConfigInject;
 import me.trae.core.framework.types.frame.SpigotListener;
-import me.trae.core.utility.UtilColor;
-import me.trae.core.utility.UtilJava;
-import me.trae.core.utility.UtilMessage;
-import me.trae.core.utility.UtilServer;
+import me.trae.core.utility.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -72,7 +69,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
 
         if (!(damageEvent.getDamager() instanceof Player)) {
             if (damageEvent.getDamager() != null) {
-                killerName = String.format("a %s", killerName);
+                killerName = UtilString.format("a %s", killerName);
             }
 
             UtilMessage.simpleMessage(target, "Death", "<var> was killed by <var>.", Arrays.asList(entityName, killerName));
@@ -89,7 +86,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
         }
 
         if ((damageReason == null || damageReason.hasExpired()) && !(reason.contains("Air"))) {
-            reason = String.format("a %s", reason);
+            reason = UtilString.format("a %s", reason);
         }
 
         final String assistsString = UtilJava.get(event.getDeathEvent().getAssists(), assists -> {
@@ -97,7 +94,7 @@ public class HandleCustomDeathMessage extends SpigotListener<Core, DeathManager>
                 return "";
             }
 
-            return String.format(" + %s", assists);
+            return UtilString.format(" + %s", assists);
         });
 
         UtilMessage.simpleMessage(target, "Death", "<var> was killed by <var> with <var>.", Arrays.asList(entityName, killerName + assistsString, reason));

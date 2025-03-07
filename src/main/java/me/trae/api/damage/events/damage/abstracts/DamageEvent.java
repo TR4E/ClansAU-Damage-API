@@ -9,6 +9,7 @@ import me.trae.core.event.CustomCancellableEvent;
 import me.trae.core.player.events.PlayerDisplayNameEvent;
 import me.trae.core.utility.UtilPlugin;
 import me.trae.core.utility.UtilServer;
+import me.trae.core.utility.UtilString;
 import me.trae.core.utility.objects.SoundCreator;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -89,8 +90,8 @@ public class DamageEvent extends CustomCancellableEvent implements IDamageEvent 
             this.damageeName = UtilServer.getEvent(new PlayerDisplayNameEvent(damageePlayer, damagerPlayer)).getPlayerName();
             this.damagerName = UtilServer.getEvent(new PlayerDisplayNameEvent(damagerPlayer, damageePlayer)).getPlayerName();
         } else {
-            this.damageeName = String.format("<yellow>%s", this.getDamagee().getName());
-            this.damagerName = String.format("<yellow>%s", (this.getDamager() != null ? this.getDamager().getName() : this.getCauseString()));
+            this.damageeName = UtilString.format("<yellow>%s", this.getDamagee().getName());
+            this.damagerName = UtilString.format("<yellow>%s", (this.getDamager() != null ? this.getDamager().getName() : this.getCauseString()));
         }
     }
 

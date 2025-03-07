@@ -6,10 +6,7 @@ import me.trae.core.npc.CustomNPC;
 import me.trae.core.npc.models.ClickableNPC;
 import me.trae.core.npc.models.ExpirableNPC;
 import me.trae.core.player.events.PlayerDisplayNameEvent;
-import me.trae.core.utility.UtilJava;
-import me.trae.core.utility.UtilMessage;
-import me.trae.core.utility.UtilParticle;
-import me.trae.core.utility.UtilServer;
+import me.trae.core.utility.*;
 import me.trae.core.utility.enums.ClickType;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.apache.commons.io.FileUtils;
@@ -52,7 +49,7 @@ public abstract class CombatNPC extends CustomNPC implements ClickableNPC, Expir
 
     @Override
     public String getDisplayName() {
-        return String.format("<yellow><bold>%s <white>- <aqua><bold>%s", this.getPlayer().getName(), "Right Click");
+        return UtilString.format("<yellow><bold>%s <white>- <aqua><bold>%s", this.getPlayer().getName(), "Right Click");
     }
 
     @Override
@@ -96,7 +93,7 @@ public abstract class CombatNPC extends CustomNPC implements ClickableNPC, Expir
         }
 
         try {
-            FileUtils.forceDelete(new File(String.format("%s/playerdata/%s.dat", this.getLocation().getWorld().getName(), this.getPlayer().getUniqueId().toString())));
+            FileUtils.forceDelete(new File(UtilString.format("%s/playerdata/%s.dat", this.getLocation().getWorld().getName(), this.getPlayer().getUniqueId().toString())));
         } catch (final Exception e) {
             e.printStackTrace();
         }
