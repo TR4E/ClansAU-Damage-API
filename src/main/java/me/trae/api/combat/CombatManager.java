@@ -5,10 +5,7 @@ import me.trae.api.combat.events.CombatReceiveEvent;
 import me.trae.api.combat.events.CombatRemoveEvent;
 import me.trae.api.combat.interfaces.ICombatManager;
 import me.trae.api.combat.log.LogCountdown;
-import me.trae.api.combat.modules.HandleCombatLogOnPlayerJoinAndQuit;
-import me.trae.api.combat.modules.HandleCombatOnPlayerDamage;
-import me.trae.api.combat.modules.HandleCombatOnPlayerDeath;
-import me.trae.api.combat.modules.HandleCombatUpdater;
+import me.trae.api.combat.modules.*;
 import me.trae.api.combat.npc.CombatNPC;
 import me.trae.api.damage.utility.UtilDamage;
 import me.trae.core.Core;
@@ -48,6 +45,7 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
         addModule(new SafeLogCommand(this));
 
         // Modules
+        addModule(new DisableNaturalRegenerationWhileInCombat(this));
         addModule(new HandleCombatLogOnPlayerJoinAndQuit(this));
         addModule(new HandleCombatOnPlayerDamage(this));
         addModule(new HandleCombatOnPlayerDeath(this));
