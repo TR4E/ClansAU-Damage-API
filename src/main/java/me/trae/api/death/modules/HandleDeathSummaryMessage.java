@@ -7,10 +7,7 @@ import me.trae.api.death.DeathManager;
 import me.trae.api.death.events.CustomDeathEvent;
 import me.trae.core.Core;
 import me.trae.core.framework.types.frame.SpigotListener;
-import me.trae.core.utility.UtilColor;
-import me.trae.core.utility.UtilMessage;
-import me.trae.core.utility.UtilString;
-import me.trae.core.utility.UtilTime;
+import me.trae.core.utility.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,9 +43,9 @@ public class HandleDeathSummaryMessage extends SpigotListener<Core, DeathManager
             final int index = i + 1;
 
             if (data.getDamager() instanceof Player) {
-                UtilMessage.simpleMessage(player, UtilString.pair("<dark_green>#<var>", "<reset>[<var>] [<var>] [<red><var> dmg</red>] [<light_purple><var> Prior</light_purple>]"), Arrays.asList(String.valueOf(index), data.getDamagerName(), this.getReason(data), String.valueOf(data.getDamage()), UtilTime.getTime(System.currentTimeMillis() - data.getSystemTime())));
+                UtilMessage.simpleMessage(player, UtilString.pair("<dark_green>#<var>", "<reset>[<var>] [<var>] [<red><var> dmg</red>] [<light_purple><var> Prior</light_purple>]"), Arrays.asList(String.valueOf(index), data.getDamagerName(), this.getReason(data), UtilMath.format(data.getDamage(), "#.##"), UtilTime.getTime(System.currentTimeMillis() - data.getSystemTime())));
             } else {
-                UtilMessage.simpleMessage(player, UtilString.pair("<dark_green>#<var>", "<reset>[<var>] [<red><var> dmg</red>] [<light_purple><var> Prior</light_purple>]"), Arrays.asList(String.valueOf(index), data.getDamagerName(), String.valueOf(data.getDamage()), UtilTime.getTime(System.currentTimeMillis() - data.getSystemTime())));
+                UtilMessage.simpleMessage(player, UtilString.pair("<dark_green>#<var>", "<reset>[<var>] [<red><var> dmg</red>] [<light_purple><var> Prior</light_purple>]"), Arrays.asList(String.valueOf(index), data.getDamagerName(), UtilMath.format(data.getDamage(), "#.##"), UtilTime.getTime(System.currentTimeMillis() - data.getSystemTime())));
             }
 
             if (index == 10) {
