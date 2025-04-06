@@ -15,9 +15,7 @@ import me.trae.core.countdown.CountdownManager;
 import me.trae.core.countdown.types.PlayerCountdown;
 import me.trae.core.framework.SpigotManager;
 import me.trae.core.utility.UtilServer;
-import me.trae.core.weapon.WeaponManager;
-import me.trae.core.weapon.models.ValuableWeapon;
-import org.bukkit.Material;
+import me.trae.core.utility.UtilWeapon;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +23,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 public class CombatManager extends SpigotManager<Core> implements ICombatManager {
 
@@ -109,24 +106,14 @@ public class CombatManager extends SpigotManager<Core> implements ICombatManager
             return false;
         }
 
-        final WeaponManager weaponManager = this.getInstance().getManagerByClass(WeaponManager.class);
-
-        final Predicate<ItemStack> predicate = (itemStack -> {
-            if (itemStack == null || itemStack.getType() == Material.AIR) {
-                return false;
-            }
-
-            return weaponManager.getWeaponByItemStack(itemStack) instanceof ValuableWeapon;
-        });
-
         for (final ItemStack itemStack : player.getInventory().getArmorContents()) {
-            if (predicate.test(itemStack)) {
+            if (UtilWeapon.isValuableByItemStack(itemStack)) {
                 return false;
             }
         }
 
         for (final ItemStack itemStack : player.getInventory().getContents()) {
-            if (predicate.test(itemStack)) {
+            if (UtilWeapon.isValuableByItemStack(itemStack)) {
                 return false;
             }
         }
